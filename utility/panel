@@ -1,0 +1,1 @@
+wget -q --no-check-certificate -O setup.sh https://github.com/hmz-hh/pp/raw/refs/heads/main/utility/panell && chmod +x setup.sh && ./setup.sh

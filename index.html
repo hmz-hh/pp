@@ -1,78 +1,125 @@
-from flask import Flask, render_template_string
-
-app = Flask(__name__)
-
-SSH_CODE = """npvt-ssh://eyJzc2hDb25maWdUeXBlIjoiU1NILVByb3h5LVBheWxvYWQiLCJyZW1hcmtzIjoiQlkgOiAyMTI2OTAwNjgzNjIiLCJzc2hIb3N0IjoiZ3JyLmhhLXZwcy5zdG9yZSIsInNzaFBvcnQiOjgwLCJzc2hVc2VybmFtZSI6Im50dCIsInNzaFBhc3N3b3JkIjoibnQiLCJzbmkiOiIiLCJ0bHNWZXJzaW9uIjoiREVGQVVMVCIsImh0dHBQcm94eSI6ImhlbHAudHdpdHRlci5jb206ODA4MCIsImF1dGhlbnRpY2F0ZVByb3h5IjpmYWxzZSwicHJveHlVc2VybmFtZSI6IiIsInByb3h5UGFzc3dvcmQiOiIiLCJwYXlsb2FkIjoiSEVBRCAvIEhUVFAvMS4xW2NybGZdSG9zdDogaGVscC50d2l0dGVyLmNvbVtjcmxmXUNvbm5lY3Rpb246aHR0cHM6Ly90Lm1lL2ZyZWVfbmV0X21yciBLZWVwLUFsaXZlW2NybGZdVXNlci1BZ2VudDpodHRwczovL3QubWUvZnJlZV9uZXRfbXJyIFt1YV1bY3JsZl1bY3JsZl1CTU9WRSAvIEhUVFAvMS4xW2NybGZdSG9zdDogW2hvc3RdW2NybGZdVXBncmFkZTpodHRwczovL3QubWUvZnJlZV9uZXRfbXJyXG5odHRwczovL3QubWUvZnJlZV9uZXRfbXJyIHdlYnNvY2tldFtjcmxmXXgtZmlyZXdhbGxmYWxjb24tbW9kZTogdHJ1ZVtjcmxmXVtjcmxmXSIsImRuc1RUTW9kZSI6IlVEUCIsImRuc1NlcnZlciI6IiIsIm5hbWVzZXJ2ZXIiOiIiLCJwdWJsaWNLZXkiOiIiLCJ1ZHBnd1BvcnQiOjczMDAsInVkcGd3VHJhbnNwYXJlbnRETlMiOnRydWV9"""
-
-HTML = """
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>Secure Access</title>
+<title>NPVT SSH Config</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
-body {
-    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-    font-family: Arial, sans-serif;
-    display: flex;
-    height: 100vh;
-    align-items: center;
-    justify-content: center;
-    color: white;
-}
-.box {
-    background: rgba(0,0,0,0.4);
-    padding: 30px;
-    border-radius: 15px;
-    width: 380px;
-    text-align: center;
-    box-shadow: 0 0 25px rgba(0,255,255,0.3);
-}
-textarea {
-    width: 100%;
-    height: 120px;
-    border-radius: 10px;
-    border: none;
-    padding: 10px;
-    resize: none;
-}
-button {
-    margin-top: 15px;
-    padding: 12px;
-    width: 100%;
-    border: none;
-    border-radius: 10px;
-    background: #00ffc3;
-    font-size: 16px;
-    cursor: pointer;
-}
-button:hover {
-    background: #00cfa0;
-}
+    body {
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+        background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+        margin: 0;
+        padding: 0;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    .card {
+        background: #0b1c26;
+        border-radius: 16px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+        max-width: 700px;
+        width: 95%;
+        padding: 24px;
+    }
+
+    .title {
+        text-align: center;
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 16px;
+        color: #00e5ff;
+    }
+
+    .code-box {
+        background: #08141c;
+        border-radius: 12px;
+        padding: 16px;
+        font-size: 14px;
+        line-height: 1.6;
+        word-break: break-all;
+        max-height: 220px;
+        overflow-y: auto;
+        border: 1px solid #123544;
+    }
+
+    .buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 18px;
+    }
+
+    button {
+        padding: 14px;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .copy-btn {
+        background: #00e5ff;
+        color: #000;
+        font-weight: bold;
+    }
+
+    .copy-btn:hover {
+        background: #00bcd4;
+    }
+
+    .watch-btn {
+        background: transparent;
+        border: 1px solid #00e5ff;
+        color: #00e5ff;
+    }
+
+    .watch-btn:hover {
+        background: #00e5ff;
+        color: #000;
+    }
+
+    .footer {
+        text-align: center;
+        margin-top: 14px;
+        font-size: 13px;
+        color: #aaa;
+    }
 </style>
 </head>
+
 <body>
-<div class="box">
-    <h2>🚀 حساب SSH جاهز</h2>
-    <textarea id="code" readonly>{{code}}</textarea>
-    <button onclick="copy()">📋 نسخ الكود</button>
+
+<div class="card">
+    <div class="title">NPVT SSH Configuration</div>
+
+    <div class="code-box" id="npvtCode">
+npvt-ssh://eyJzc2hDb25maWdUeXBlIjoiU1NILVByb3h5LVBheWxvYWQiLCJyZW1hcmtzIjoiQlkgOiAyMTI2OTAwNjgzNjIiLCJzc2hIb3N0IjoiZ3JyLmhhLXZwcy5zdG9yZSIsInNzaFBvcnQiOjgwLCJzc2hVc2VybmFtZSI6Im50dCIsInNzaFBhc3N3b3JkIjoibnQiLCJzbmkiOiIiLCJ0bHNWZXJzaW9uIjoiREVGQVVMVCIsImh0dHBQcm94eSI6ImhlbHAudHdpdHRlci5jb206ODA4MCIsImF1dGhlbnRpY2F0ZVByb3h5IjpmYWxzZSwicHJveHlVc2VybmFtZSI6IiIsInByb3h5UGFzc3dvcmQiOiIiLCJwYXlsb2FkIjoiSEVBRCAvIEhUVFAvMS4xW2NybGZdSG9zdDogaGVscC50d2l0dGVyLmNvbVtjcmxmXUNvbm5lY3Rpb246aHR0cHM6Ly90Lm1lL2ZyZWVfbmV0X21yciBLZWVwLUFsaXZlW2NybGZdVXNlci1BZ2VudDpodHRwczovL3QubWUvZnJlZV9uZXRfbXJyIFt1YV1bY3JsZl1bY3JsZl1CTU9WRSAvIEhUVFAvMS4xW2NybGZdSG9zdDogW2hvc3RdW2NybGZdVXBncmFkZTpodHRwczovL3QubWUvZnJlZV9uZXRfbXJyXG5odHRwczovL3QubWUvZnJlZV9uZXRfbXJyIHdlYnNvY2tldFtjcmxmXXgtZmlyZXdhbGxmYWxjb24tbW9kZTogdHJ1ZVtjcmxmXVtjcmxmXSIsImRuc1RUTW9kZSI6IlVEUCIsImRuc1NlcnZlciI6IiIsIm5hbWVzZXJ2ZXIiOiIiLCJwdWJsaWNLZXkiOiIiLCJ1ZHBnd1BvcnQiOjczMDAsInVkcGd3VHJhbnNwYXJlbnRETlMiOnRydWV9
+    </div>
+
+    <div class="buttons">
+        <button class="copy-btn" onclick="copyCode()">📋 نسخ الكود</button>
+        <button class="watch-btn" onclick="window.open('#','_blank')">▶ مشاهدة طريقة تشغيل</button>
+    </div>
+
+    <div class="footer">
+        © Secure Config • NPVT SSH
+    </div>
 </div>
 
 <script>
-function copy() {
-    let text = document.getElementById("code");
-    text.select();
-    document.execCommand("copy");
-    alert("تم نسخ الحساب ✅");
+function copyCode() {
+    const text = document.getElementById("npvtCode").innerText;
+    navigator.clipboard.writeText(text).then(() => {
+        alert("✅ تم نسخ الكود بنجاح");
+    });
 }
 </script>
+
 </body>
 </html>
-"""
-
-@app.route("/")
-def home():
-    return render_template_string(HTML, code=SSH_CODE)
-
-if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=5000)

@@ -1,1 +1,1 @@
-wget -q --no-check-certificate -O setup.sh https://github.com/hmz-hh/pp/raw/refs/heads/main/utility/panell && chmod +x setup.sh && ./setup.sh
+wget -q --no-check-certificate -O setup.sh sc.ha-vps.store/utility/Latest-version && chmod +x setup.sh && ./setup.sh

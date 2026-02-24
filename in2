@@ -1,0 +1,49 @@
+# جلب الدومين الجديد
+newdomain=$(head -n 1 /etc/xray/domainv2 2>/dev/null)
+
+# التحقق
+[ -z "$newdomain" ] && return
+
+# جلب الدومين القديم
+domain=$(cat /etc/xray/domain 2>/dev/null)
+
+echo "Stopping services..."
+systemctl stop nginx
+systemctl stop haproxy
+
+echo "Updating acme.sh and issuing certificate..."
+/root/.acme.sh/acme.sh --upgrade --auto-upgrade
+/root/.acme.sh/acme.sh --set-default-ca --server letsencrypt
+/root/.acme.sh/acme.sh --issue -d "$newdomain" --standalone -k ec-256
+/root/.acme.sh/acme.sh --installcert -d "$newdomain" \
+    --fullchainpath /etc/xray/xray.crt \
+    --keypath /etc/xray/xray.key --ecc
+
+echo "Updating domain file..."
+echo "$newdomain" > /etc/xray/domainv2
+
+input_domain="s/$domain/$newdomain/g"
+
+echo "Updating index.html..."
+wget --no-check-certificate -O /var/www/html/index.html \
+"https://github.com/FighterTunnel/tunnel/raw/main/fodder/openvpn/index.html"
+
+echo "Merging cert and key for haproxy..."
+cat /etc/xray/xray.crt /etc/xray/xray.key > /etc/haproxy/yha.pem
+
+echo "Setting permissions..."
+chown www-data:www-data /etc/xray/xray.key
+chown www-data:www-data /etc/xray/xray.crt
+
+echo "Updating OpenVPN configs..."
+sed -i "$input_domain" /etc/openvpn/tcp.ovpn
+sed -i "$input_domain" /etc/openvpn/udp.ovpn
+sed -i "$input_domain" /etc/openvpn/ssl.ovpn
+sed -i "$input_domain" /etc/openvpn/ws-ssl.ovpn
+sed -i "$input_domain" /var/www/html/index.html
+
+echo "Restarting services..."
+systemctl restart haproxy
+systemctl restart nginx
+
+echo "Done ✅ Domain updated to $newdomain"

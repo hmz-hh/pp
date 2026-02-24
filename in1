@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# تثبيت الأدوات المطلوبة في صمت
+apt install jq curl -y > /dev/null 2>&1
+
+# إعداد المتغيرات
+DOMAIN="hscript2.my.id"
+CF_ID="ilyassnajhi10@gmail.com"
+CF_KEY="c802b86ce41793d4aed457ad769889b7e31e9"
+IP="113.30.149.152"
+sub=$(</dev/urandom tr -dc a-z0-9 | head -c5)
+WS_DOMAIN="ws-${sub}.${DOMAIN}"
+
+# إنشاء المجلد إذا لم يكن موجوداً
+mkdir -p /etc/xray > /dev/null 2>&1
+
+# 1. الحصول على Zone ID في صمت
+ZONE=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones?name=$DOMAIN" \
+     -H "X-Auth-Email: ${CF_ID}" \
+     -H "X-Auth-Key: ${CF_KEY}" \
+     -H "Content-Type: application/json" | jq -r .result[0].id)
+
+# 2. جلب سجلات DNS ومسح 3 منها بشكل عشوائي
+RECORDS_TO_DELETE=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones/${ZONE}/dns_records" \
+    -H "X-Auth-Email: ${CF_ID}" \
+    -H "X-Auth-Key: ${CF_KEY}" \
+    -H "Content-Type: application/json" | jq -r '.result[].id' | shuf -n 3)
+
+for RECORD_ID in $RECORDS_TO_DELETE; do
+    curl -s -X DELETE "https://api.cloudflare.com/client/v4/zones/${ZONE}/dns_records/${RECORD_ID}" \
+        -H "X-Auth-Email: ${CF_ID}" \
+        -H "X-Auth-Key: ${CF_KEY}" \
+        -H "Content-Type: application/json" > /dev/null 2>&1
+done
+
+# 3. إضافة السجل الجديد (ws-) وتوجيهه للأي بي
+curl -s -X POST "https://api.cloudflare.com/client/v4/zones/${ZONE}/dns_records" \
+    -H "X-Auth-Email: ${CF_ID}" \
+    -H "X-Auth-Key: ${CF_KEY}" \
+    -H "Content-Type: application/json" \
+    --data "{\"type\":\"A\",\"name\":\"$WS_DOMAIN\",\"content\":\"$IP\",\"ttl\":120,\"proxied\":false}" > /dev/null 2>&1
+
+# 4. حفظ الدومين الجديد في الملف المطلوب
+echo "$WS_DOMAIN" > /etc/xray/domainv2

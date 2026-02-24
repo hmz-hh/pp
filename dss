@@ -11,9 +11,9 @@ clear
 sub=$(</dev/urandom tr -dc a-z0-9 | head -c5)
 
 DOMAIN=hscript2.my.id
-WS_DOMAIN=ws-${sub}.hscript2.my.id
-FLARE_DOMAIN=flare-${sub}.hscript2.my.id
-NS_DOMAIN=ns-${sub}.hscript2.my.id
+WS_DOMAIN=ws-${sub}.ha-vps.store
+FLARE_DOMAIN=flare-${sub}.ha-vps.store
+NS_DOMAIN=ns-${sub}.ha-vps.store
 
 CF_TOKEN="ZJ-HMdxrRwq54Mpv7NbuNlqOW11SaXIKQRQBqLLa"
 

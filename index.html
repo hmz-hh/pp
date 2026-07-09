@@ -1,43 +1,60 @@
-import telebot
-from telebot.types import ReplyKeyboardMarkup, KeyboardButton, WebAppInfo
-
-# التوكن ديالك
-TOKEN = '8904395327:AAECsz0IFzHSRV8QFv3BMeIedvl9ebJiy-U'
-bot = telebot.TeleBot(TOKEN)
-
-# ⚠️ حط الرابط ديال الصفحة لي رفعتي للأنترنيت هنا ⚠️
-WEB_APP_URL = "https://my-color-buttons.tiiny.site"
-
-@bot.message_handler(commands=['start'])
-def send_welcome(message):
-    # كنصاوبو كيبورد لتحت حيت هو لي كيخدم مع إرسال البيانات (sendData)
-    markup = ReplyKeyboardMarkup(resize_keyboard=True)
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أزرار ملونة</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        /* هادا هو الكود لي كيلون الأزرار كاملين (CSS) */
+        button {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .btn-red { background-color: #ff4d4d; }
+        .btn-green { background-color: #4CAF50; }
+        .btn-blue { background-color: #2196F3; }
+        .btn-yellow { background-color: #ffeb3b; color: black; }
+    </style>
+</head>
+<body>
+    <h3 style="color: #333;">عزل اللون لي بغيتي:</h3>
     
-    # كنربطو الزر بالرابط ديال الواجهة
-    web_app_btn = KeyboardButton(text="🎨 فتح الأزرار الملونة", web_app=WebAppInfo(url=WEB_APP_URL))
-    markup.add(web_app_btn)
-    
-    bot.send_message(
-        message.chat.id, 
-        "مرحبا بك! كليكي على الزر لي لتحت باش تفتح الواجهة وتشوف الأزرار ملونين كاملين:", 
-        reply_markup=markup
-    )
+    <button class="btn-red" onclick="sendToBot('red')">زر أحمر 🔴</button>
+    <button class="btn-green" onclick="sendToBot('green')">زر أخضر 🟢</button>
+    <button class="btn-blue" onclick="sendToBot('blue')">زر أزرق 🔵</button>
+    <button class="btn-yellow" onclick="sendToBot('yellow')">زر أصفر 🟡</button>
 
-# هاد الدالة باش البوت يستقبل الداتا (اللون) لي صيفطات ليه صفحة الويب
-@bot.message_handler(content_types=['web_app_data'])
-def handle_web_app_data(message):
-    # كنجبدو الداتا لي جاتنا من الزر لي تكليكا فالويب
-    color_received = message.web_app_data.data
-    
-    # البوت كيجاوب على حساب اللون لي تختار
-    if color_received == "red":
-        bot.send_message(message.chat.id, "كليكيتي على الزر الأحمر 🔴")
-    elif color_received == "green":
-        bot.send_message(message.chat.id, "كليكيتي على الزر الأخضر 🟢")
-    elif color_received == "blue":
-        bot.send_message(message.chat.id, "كليكيتي على الزر الأزرق 🔵")
-    elif color_received == "yellow":
-        bot.send_message(message.chat.id, "كليكيتي على الزر الأصفر 🟡")
+    <script>
+        // كنعلمو تيليغرام بلي هادي صفحة ديالو
+        let tg = window.Telegram.WebApp;
+        tg.expand(); // باش الباج تفتح على الشاشة كاملة
 
-print("البوت خدام دابا... سيفط ليه /start")
-bot.polling()
+        // هاد الدالة كتصيفط الداتا للبوت ملي كنكليكيو على شي زر
+        function sendToBot(color) {
+            tg.sendData(color); // كنصيفطو اللون
+            tg.close(); // كنسدو الواجهة باش نرجعو للبوت
+        }
+    </script>
+</body>
+</html>

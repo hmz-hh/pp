@@ -3,127 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إعدادات البوت - Telegram Style</title>
+    <title>إعدادات البوت - تصميم احترافي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* إعدادات الخطوط والأساسيات */
-        body {
+        :root {
+            --bg-color: #0f1621;
+            --card-bg: #1c242d;
+            --primary-blue: #3390ec;
+            --primary-hover: #2a7cbd;
+            --text-main: #ffffff;
+            --text-muted: #7f8b9c;
+            --border-color: #2b3643;
+        }
+
+        * {
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #e6ebea; /* لون خلفية يشبه تيليجرام */
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            color: var(--text-main);
         }
 
-        /* حاوية النموذج */
-        .container {
-            background-color: #ffffff;
+        .login-container {
+            background-color: var(--card-bg);
             width: 100%;
-            max-width: 400px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            box-sizing: border-box;
-        }
-
-        /* الهيدر أو الرأس الأزرق */
-        .header {
-            background-color: #3390ec; /* أزرق تيليجرام */
-            color: white;
-            padding: 20px;
+            max-width: 420px;
+            padding: 40px 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             text-align: center;
-            font-size: 20px;
-            font-weight: bold;
+            animation: fadeIn 0.5s ease-out;
         }
 
-        /* منطقة الإدخال */
-        .form-content {
-            padding: 30px 20px;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo-circle {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #3390ec, #1c7cd6);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 4px 15px rgba(51, 144, 236, 0.4);
+        }
+
+        .logo-circle svg {
+            width: 40px;
+            height: 40px;
+            fill: white;
+            margin-right: 5px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 30px;
         }
 
         .input-group {
-            margin-bottom: 20px;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #707579;
-            font-size: 14px;
-            font-weight: 500;
+            position: relative;
+            margin-bottom: 25px;
+            text-align: right;
         }
 
         .input-group input {
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #dfe1e5;
-            border-radius: 8px;
+            background: transparent;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            color: var(--text-main);
             font-size: 16px;
-            box-sizing: border-box;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            direction: ltr; /* لجعل الكتابة بالإنجليزية أسهل */
-        }
-
-        .input-group input:focus {
             outline: none;
-            border-color: #3390ec;
-            box-shadow: 0 0 0 2px rgba(51, 144, 236, 0.2);
+            transition: all 0.3s ease;
+            direction: ltr;
         }
 
-        /* زر الإرسال */
+        .input-group label {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 16px;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            background-color: var(--card-bg);
+            padding: 0 5px;
+        }
+
+        /* تأثيرات عند الكتابة أو التركيز */
+        .input-group input:focus,
+        .input-group input:not(:placeholder-shown) {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 4px rgba(51, 144, 236, 0.1);
+        }
+
+        .input-group input:focus ~ label,
+        .input-group input:not(:placeholder-shown) ~ label {
+            top: 0;
+            font-size: 13px;
+            color: var(--primary-blue);
+        }
+
         .submit-btn {
             width: 100%;
-            background-color: #3390ec;
+            background-color: var(--primary-blue);
             color: white;
             border: none;
-            padding: 14px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(51, 144, 236, 0.3);
         }
 
         .submit-btn:hover {
-            background-color: #2b7cb9;
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(51, 144, 236, 0.4);
         }
 
         .submit-btn:active {
-            background-color: #246a9e;
+            transform: translateY(0);
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="header">
-            إعدادات البوت (Telegram)
+    <div class="login-container">
+        <!-- لوجو تيليجرام -->
+        <div class="logo-circle">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.12.03-1.98 1.25-5.58 3.69-.53.36-1.01.53-1.44.52-.47-.01-1.38-.27-2.06-.49-.83-.27-1.49-.42-1.43-.89.03-.25.38-.51 1.03-.78 4.04-1.76 6.74-2.92 8.09-3.48 3.85-1.6 4.64-1.88 5.17-1.89.12 0 .37.03.51.14.11.09.15.22.16.35-.01.07-.01.19-.03.32z"/>
+            </svg>
         </div>
-        
-        <div class="form-content">
-            <form action="#" method="POST" id="tgForm">
-                
-                <div class="input-group">
-                    <label for="bot_token">رمز البوت (Bot Token)</label>
-                    <input type="text" id="bot_token" name="bot_token" placeholder="123456789:ABCdefGHIjklMNO..." required>
-                </div>
 
-                <div class="input-group">
-                    <label for="user_id">رقم المعرف (ID)</label>
-                    <input type="number" id="user_id" name="user_id" placeholder="مثال: 12345678" required>
-                </div>
+        <h2>إعدادات البوت</h2>
+        <p class="subtitle">قم بإدخال معلومات البوت الخاصة بك للاتصال</p>
 
-                <div class="input-group">
-                    <label for="username">اسم المستخدم (Username)</label>
-                    <input type="text" id="username" name="username" placeholder="@username" required>
-                </div>
+        <form action="#" method="POST">
+            
+            <div class="input-group">
+                <input type="text" id="bot_token" name="bot_token" placeholder=" " required>
+                <label for="bot_token">رمز البوت (Bot Token)</label>
+            </div>
 
-                <button type="submit" class="submit-btn">حفظ البيانات</button>
-                
-            </form>
-        </div>
+            <div class="input-group">
+                <input type="number" id="user_id" name="user_id" placeholder=" " required>
+                <label for="user_id">رقم المعرف (ID)</label>
+            </div>
+
+            <div class="input-group">
+                <input type="text" id="username" name="username" placeholder=" " required>
+                <label for="username">اسم المستخدم (Username)</label>
+            </div>
+
+            <button type="submit" class="submit-btn">تسجيل الدخول</button>
+            
+        </form>
     </div>
 
 </body>

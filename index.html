@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>إدخال البيانات</title>
     <style>
-        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f0f2f5; margin: 0; }
-        .container { background: #fff; padding: 25px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; max-width: 350px; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 16px; }
+        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #1a1a1a; margin: 0; color: #fff; }
+        .container { background: #333; padding: 25px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); width: 100%; max-width: 350px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #555; border-radius: 5px; box-sizing: border-box; font-size: 16px; background: #222; color: #fff; }
         button { width: 100%; padding: 12px; background: #0088cc; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; margin-top: 10px; }
         button:hover { background: #0077b3; }
     </style>
@@ -15,47 +15,43 @@
 <body>
 
 <div class="container">
-    <h3 style="text-align: center; color: #333;">المرجو إدخال المعلومات</h3>
-    <input type="text" id="input1" placeholder="الخانة الأولى">
-    <input type="text" id="input2" placeholder="الخانة الثانية">
+    <h3 style="text-align: center;">إضافة مستخدم جديد</h3>
+    <input type="text" id="input1" placeholder="الخانة الأولى (مثلا: الايدي)">
+    <input type="text" id="input2" placeholder="الخانة الثانية (مثلا: الرصيد)">
     <input type="text" id="input3" placeholder="الخانة الثالثة">
     <input type="text" id="input4" placeholder="الخانة الرابعة">
-    <button onclick="sendData()">إرسال البيانات</button>
+    <button onclick="sendToBot()">إرسال</button>
 </div>
 
 <script>
-    function sendData() {
+    function sendToBot() {
         const i1 = document.getElementById('input1').value;
         const i2 = document.getElementById('input2').value;
         const i3 = document.getElementById('input3').value;
         const i4 = document.getElementById('input4').value;
 
         if(!i1 || !i2 || !i3 || !i4) {
-            alert("المرجو ملء جميع الخانات!");
+            alert("عمر كلشي عافاك!");
             return;
         }
 
-        // تجميع البيانات
-        const message = `تم استلام بيانات جديدة:\n1: ${i1}\n2: ${i2}\n3: ${i3}\n4: ${i4}`;
-
-        // 1. الإرسال إلى تيليجرام (مضمون 100% لأن GitHub Pages كيفرض HTTPS)
+        // الرسالة لي غتمشي للبوت
+        const message = `[NEW_DATA]\n1:${i1}\n2:${i2}\n3:${i3}\n4:${i4}`;
+        
+        // التوكن والايدي ديالك
         const token = "8995901866:AAHppeuMfQgK2oZYxdI6daJDBbBtpaPSyb0";
         const chatId = "8313227172";
         const tgUrl = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
 
         fetch(tgUrl)
             .then(response => {
-                if(response.ok) alert("تم الإرسال بنجاح!");
+                if(response.ok) {
+                    alert("تم الإرسال بنجاح!");
+                    // تفريغ الخانات
+                    document.querySelectorAll('input').forEach(input => input.value = '');
+                }
             })
-            .catch(err => console.error("Error TG:", err));
-
-        // 2. الإرسال إلى VPS (بدل هاد IP بـ IP ديال السيرفر ديالك)
-        // ملاحظة: يلا كنتي حاط السيت ف GitHub Pages (HTTPS)، المتصفح يقدر يمنع الإرسال لـ HTTP عادي ديال الـ VPS
-        const vpsIP = "http://141.227.129.50"; 
-        fetch(vpsIP, {
-            method: 'POST',
-            body: message
-        }).catch(err => console.log("VPS Error:", err));
+            .catch(err => alert("وقع شي مشكل فالاتصال"));
     }
 </script>
 

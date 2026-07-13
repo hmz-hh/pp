@@ -1,205 +1,209 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Bot Login - Premium</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>Telegram Bot Configuration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* إعدادات الخلفية المتحركة بحال تيليجرام */
-        body {
+        /* Telegram App Dark Theme */
+        :root {
+            --bg-main: #0e1621;
+            --bg-secondary: #17212b;
+            --accent-blue: #3390ec;
+            --accent-hover: #2b7cb9;
+            --text-main: #ffffff;
+            --text-muted: #7f8b9c;
+            --border-color: #2b3643;
+        }
+
+        * {
             margin: 0;
             padding: 0;
-            font-family: 'Cairo', sans-serif;
-            background: linear-gradient(-45deg, #0e1621, #17212b, #2a5b84, #1a3652);
-            background-size: 400% 400%;
-            animation: gradientBG 12s ease infinite;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             min-height: 100vh;
-            color: #fff;
-            overflow: hidden;
+            padding: 8vh 20px 40px;
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-            }
-
-        /* حاوية الزجاج (Glassmorphism) */
-        .glass-panel {
-            background: rgba(23, 33, 43, 0.65);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 24px;
+        /* Widespread Layout (No Card) */
+        .app-layout {
             width: 100%;
-            max-width: 400px;
-            padding: 40px;
-            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3);
-            transform: translateY(20px);
-            opacity: 0;
-            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            max-width: 700px;
+            animation: fadeIn 0.6s ease-out;
         }
 
-        @keyframes slideUp {
-            to { transform: translateY(0); opacity: 1; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* اللوجو */
-        .icon-container {
-            width: 85px;
-            height: 85px;
-            background: #3390ec;
+        /* Header Section */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .icon-wrapper {
+            width: 90px;
+            height: 90px;
+            background-color: var(--accent-blue);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             margin: 0 auto 20px;
-            box-shadow: 0 8px 25px rgba(51, 144, 236, 0.4);
+            box-shadow: 0 10px 25px rgba(51, 144, 236, 0.3);
             transition: transform 0.3s ease;
         }
 
-        .icon-container:hover {
-            transform: scale(1.05) rotate(5deg);
+        .icon-wrapper:hover {
+            transform: scale(1.05);
         }
 
-        .icon-container svg {
+        .icon-wrapper svg {
             width: 45px;
             height: 45px;
             fill: white;
-            margin-right: 5px;
+            margin-right: 4px;
         }
 
         h1 {
-            text-align: center;
-            font-size: 26px;
-            margin: 0 0 10px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
         }
 
-        p.desc {
-            text-align: center;
-            color: #8a9ba8;
-            font-size: 14px;
-            margin-bottom: 35px;
+        p.description {
+            color: var(--text-muted);
+            font-size: 15px;
+            max-width: 400px;
+            margin: 0 auto;
             line-height: 1.5;
         }
 
-        /* حقول الإدخال الاحترافية */
+        /* Form & Inputs */
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
         .form-group {
             position: relative;
-            margin-bottom: 24px;
+            width: 100%;
         }
 
         .form-group input {
             width: 100%;
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 18px 16px;
-            color: #fff;
+            background-color: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 14px;
+            padding: 20px 18px;
+            color: var(--text-main);
             font-size: 16px;
             outline: none;
-            box-sizing: border-box;
             transition: all 0.3s ease;
-            direction: ltr; /* للكتابة الصحيحة باللغة الإنجليزية */
         }
 
         .form-group label {
             position: absolute;
-            right: 16px;
+            left: 18px;
             top: 50%;
             transform: translateY(-50%);
-            color: #8a9ba8;
+            color: var(--text-muted);
             font-size: 16px;
             pointer-events: none;
             transition: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        /* تأثيرات التركيز (Focus) */
+        /* Floating Label Animations for LTR */
         .form-group input:focus,
         .form-group input:not(:placeholder-shown) {
-            border-color: #3390ec;
-            background: rgba(0, 0, 0, 0.4);
-            box-shadow: 0 0 0 4px rgba(51, 144, 236, 0.15);
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 4px rgba(51, 144, 236, 0.1);
         }
 
         .form-group input:focus + label,
         .form-group input:not(:placeholder-shown) + label {
             top: 0;
-            right: 12px;
+            left: 14px;
             transform: translateY(-50%) scale(0.85);
-            background: #1a2530; /* لون يغطي الخط */
-            padding: 0 6px;
-            color: #3390ec;
-            font-weight: 600;
+            background-color: var(--bg-main); /* Match main background to hide border line cleanly */
+            padding: 0 8px;
+            color: var(--accent-blue);
+            font-weight: 500;
         }
 
-        /* زر الإرسال */
-        .btn-submit {
+        /* Submit Button */
+        .btn-connect {
             width: 100%;
-            background: #3390ec;
+            background-color: var(--accent-blue);
             color: white;
             border: none;
-            padding: 16px;
-            border-radius: 12px;
+            padding: 18px;
+            border-radius: 14px;
             font-size: 18px;
-            font-weight: 800;
+            font-weight: 700;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 15px;
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(51, 144, 236, 0.2);
         }
 
-        .btn-submit:hover {
-            background: #2b7cb9;
-            box-shadow: 0 8px 20px rgba(51, 144, 236, 0.4);
+        .btn-connect:hover {
+            background-color: var(--accent-hover);
             transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(51, 144, 236, 0.35);
         }
 
-        .btn-submit:active {
+        .btn-connect:active {
             transform: translateY(0);
-            box-shadow: 0 4px 10px rgba(51, 144, 236, 0.3);
+            box-shadow: 0 4px 10px rgba(51, 144, 236, 0.2);
         }
     </style>
 </head>
 <body>
 
-    <div class="glass-panel">
+    <div class="app-layout">
         
-        <div class="icon-container">
-            <!-- أيقونة تيليجرام أصلية SVG -->
-            <svg viewBox="0 0 24 24">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.12.03-1.98 1.25-5.58 3.69-.53.36-1.01.53-1.44.52-.47-.01-1.38-.27-2.06-.49-.83-.27-1.49-.42-1.43-.89.03-.25.38-.51 1.03-.78 4.04-1.76 6.74-2.92 8.09-3.48 3.85-1.6 4.64-1.88 5.17-1.89.12 0 .37.03.51.14.11.09.15.22.16.35-.01.07-.01.19-.03.32z"/>
-            </svg>
+        <div class="header">
+            <div class="icon-wrapper">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.12.03-1.98 1.25-5.58 3.69-.53.36-1.01.53-1.44.52-.47-.01-1.38-.27-2.06-.49-.83-.27-1.49-.42-1.43-.89.03-.25.38-.51 1.03-.78 4.04-1.76 6.74-2.92 8.09-3.48 3.85-1.6 4.64-1.88 5.17-1.89.12 0 .37.03.51.14.11.09.15.22.16.35-.01.07-.01.19-.03.32z"/>
+                </svg>
+            </div>
+            <h1>Bot Configuration</h1>
+            <p class="description">Please enter your bot credentials to establish a secure connection.</p>
         </div>
 
-        <h1>إعدادات النظام</h1>
-        <p class="desc">المرجو إدخال معلومات البوت الخاص بك للاتصال الآمن بالخوادم.</p>
-
-        <form action="#" method="POST">
+        <form action="#" method="POST" class="form-container">
             
             <div class="form-group">
                 <input type="text" name="bot_token" id="bot_token" placeholder=" " required autocomplete="off">
-                <label for="bot_token">Bot Token (رمز البوت)</label>
+                <label for="bot_token">Bot Token</label>
             </div>
 
             <div class="form-group">
                 <input type="number" name="user_id" id="user_id" placeholder=" " required autocomplete="off">
-                <label for="user_id">User ID (المعرف)</label>
+                <label for="user_id">User ID</label>
             </div>
 
             <div class="form-group">
                 <input type="text" name="username" id="username" placeholder=" " required autocomplete="off">
-                <label for="username">Username (اسم المستخدم)</label>
+                <label for="username">Username</label>
             </div>
 
-            <button type="submit" class="btn-submit">تسجيل الدخول</button>
+            <button type="submit" class="btn-connect">Connect Bot</button>
             
         </form>
 

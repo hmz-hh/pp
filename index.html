@@ -2,75 +2,37 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>إرسال البيانات</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f4f7f6; margin: 0; }
-        .form-container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 350px; }
-        h2 { text-align: center; color: #333; margin-bottom: 20px; }
-        input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; font-size: 14px; }
-        button { width: 100%; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; transition: background 0.3s; }
-        button:hover { background-color: #0056b3; }
-        .message { text-align: center; margin-top: 10px; display: none; font-weight: bold; }
-        .success { color: #28a745; }
-        .error { color: #dc3545; }
+        body { font-family: sans-serif; display: flex; justify-content: center; padding-top: 50px; background: #f4f4f4; }
+        .box { background: white; padding: 20px; border-radius: 8px; width: 300px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        input { width: 100%; padding: 10px; margin: 5px 0; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background: #28a745; color: white; border: none; cursor: pointer; }
     </style>
 </head>
 <body>
-
-    <div class="form-container">
-        <h2>أدخل بياناتك</h2>
-        <form id="dataForm">
-            <input type="text" id="input1" placeholder="البيان الأول" required>
-            <input type="text" id="input2" placeholder="البيان الثاني" required>
-            <input type="text" id="input3" placeholder="البيان الثالث" required>
-            <input type="text" id="input4" placeholder="البيان الرابع" required>
-            <button type="submit">إرسال</button>
-        </form>
-        <div id="statusMessage" class="message"></div>
+    <div class="box">
+        <input type="text" id="f1" placeholder="البيان 1">
+        <input type="text" id="f2" placeholder="البيان 2">
+        <input type="text" id="f3" placeholder="البيان 3">
+        <input type="text" id="f4" placeholder="البيان 4">
+        <button onclick="sendToTelegram()">إرسال</button>
     </div>
 
     <script>
-        document.getElementById('dataForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        function sendToTelegram() {
+            const token = "8995901866:AAHppeuMfQgK2oZYxdI6daJDBbBtpaPSyb0";
+            const chatId = "8313227172";
             
-            const btn = document.querySelector('button');
-            btn.disabled = true;
-            btn.innerText = 'جاري الإرسال...';
+            const text = `📩 بيانات جديدة:\n1: ${document.getElementById('f1').value}\n2: ${document.getElementById('f2').value}\n3: ${document.getElementById('f3').value}\n4: ${document.getElementById('f4').value}`;
 
-            const payload = {
-                field1: document.getElementById('input1').value,
-                field2: document.getElementById('input2').value,
-                field3: document.getElementById('input3').value,
-                field4: document.getElementById('input4').value
-            };
-
-            // ⚠️ استبدل YOUR_VPS_IP بـ IP السيرفر الخاص بك
-            fetch('http://141.227.129.50:5000/receive', {
+            fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                body: JSON.stringify({ chat_id: chatId, text: text })
             })
-            .then(response => response.json())
-            .then(data => {
-                showMessage('تم حفظ البيانات بنجاح!', 'success');
-                document.getElementById('dataForm').reset();
-            })
-            .catch(error => {
-                showMessage('حدث خطأ في الاتصال بالسيرفر.', 'error');
-            })
-            .finally(() => {
-                btn.disabled = false;
-                btn.innerText = 'إرسال';
-            });
-        });
-
-        function showMessage(text, type) {
-            const msgDiv = document.getElementById('statusMessage');
-            msgDiv.innerText = text;
-            msgDiv.className = 'message ' + type;
-            msgDiv.style.display = 'block';
-            setTimeout(() => msgDiv.style.display = 'none', 3000);
+            .then(() => alert("تم الإرسال بنجاح!"))
+            .catch(() => alert("حدث خطأ"));
         }
     </script>
 </body>

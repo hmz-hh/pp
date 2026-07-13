@@ -3,57 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أزرار ملونة</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <title>إرسال البيانات</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        /* هادا هو الكود لي كيلون الأزرار كاملين (CSS) */
-        button {
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            font-size: 18px;
-            font-weight: bold;
-            color: white;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .btn-red { background-color: #ff4d4d; }
-        .btn-green { background-color: #4CAF50; }
-        .btn-blue { background-color: #2196F3; }
-        .btn-yellow { background-color: #ffeb3b; color: black; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f4f7f6; margin: 0; }
+        .form-container { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 350px; }
+        h2 { text-align: center; color: #333; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; font-size: 14px; }
+        button { width: 100%; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; transition: background 0.3s; }
+        button:hover { background-color: #0056b3; }
+        .message { text-align: center; margin-top: 10px; display: none; font-weight: bold; }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
     </style>
 </head>
 <body>
-    <h3 style="color: #333;">عزل اللون لي بغيتي:</h3>
-    
-    <button class="btn-red" onclick="sendToBot('red')">زر أحمر 🔴</button>
-    <button class="btn-green" onclick="sendToBot('green')">زر أخضر 🟢</button>
-    <button class="btn-blue" onclick="sendToBot('blue')">زر أزرق 🔵</button>
-    <button class="btn-yellow" onclick="sendToBot('yellow')">زر أصفر 🟡</button>
+
+    <div class="form-container">
+        <h2>أدخل بياناتك</h2>
+        <form id="dataForm">
+            <input type="text" id="input1" placeholder="البيان الأول" required>
+            <input type="text" id="input2" placeholder="البيان الثاني" required>
+            <input type="text" id="input3" placeholder="البيان الثالث" required>
+            <input type="text" id="input4" placeholder="البيان الرابع" required>
+            <button type="submit">إرسال</button>
+        </form>
+        <div id="statusMessage" class="message"></div>
+    </div>
 
     <script>
-        // كنعلمو تيليغرام بلي هادي صفحة ديالو
-        let tg = window.Telegram.WebApp;
-        tg.expand(); // باش الباج تفتح على الشاشة كاملة
+        document.getElementById('dataForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const btn = document.querySelector('button');
+            btn.disabled = true;
+            btn.innerText = 'جاري الإرسال...';
 
-        // هاد الدالة كتصيفط الداتا للبوت ملي كنكليكيو على شي زر
-        function sendToBot(color) {
-            tg.sendData(color); // كنصيفطو اللون
-            tg.close(); // كنسدو الواجهة باش نرجعو للبوت
+            const payload = {
+                field1: document.getElementById('input1').value,
+                field2: document.getElementById('input2').value,
+                field3: document.getElementById('input3').value,
+                field4: document.getElementById('input4').value
+            };
+
+            // ⚠️ استبدل YOUR_VPS_IP بـ IP السيرفر الخاص بك
+            fetch('http://141.227.129.50:5000/receive', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => {
+                showMessage('تم حفظ البيانات بنجاح!', 'success');
+                document.getElementById('dataForm').reset();
+            })
+            .catch(error => {
+                showMessage('حدث خطأ في الاتصال بالسيرفر.', 'error');
+            })
+            .finally(() => {
+                btn.disabled = false;
+                btn.innerText = 'إرسال';
+            });
+        });
+
+        function showMessage(text, type) {
+            const msgDiv = document.getElementById('statusMessage');
+            msgDiv.innerText = text;
+            msgDiv.className = 'message ' + type;
+            msgDiv.style.display = 'block';
+            setTimeout(() => msgDiv.style.display = 'none', 3000);
         }
     </script>
 </body>

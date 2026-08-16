@@ -36,6 +36,60 @@ public final class V2Core {
     private final V2RayPoint v2RayPoint;
     private static final String CHANNEL_ID = "WakkoServiceChannel";
 
+    // إعدادات JSON ثابتة (Hardcoded) مدمجة مباشرة في الكود
+    private static final String HARDCODED_JSON_CONFIG = "{\n" +
+            "  \"inbounds\": [],\n" +
+            "  \"outbounds\": [\n" +
+            "    {\n" +
+            "      \"mux\": {\n" +
+            "        \"enabled\": false\n" +
+            "      },\n" +
+            "      \"protocol\": \"vmess\",\n" +
+            "      \"settings\": {\n" +
+            "        \"vnext\": [\n" +
+            "          {\n" +
+            "            \"address\": \"104.18.37.127\",\n" +
+            "            \"port\": 443,\n" +
+            "            \"users\": [\n" +
+            "              {\n" +
+            "                \"alterId\": 0,\n" +
+            "                \"id\": \"9cd7c8d7-0625-333c-afcc-e0fdd1924c4b\",\n" +
+            "                \"level\": 8,\n" +
+            "                \"security\": \"auto\"\n" +
+            "              }\n" +
+            "            ]\n" +
+            "          }\n" +
+            "        ]\n" +
+            "      },\n" +
+            "      \"streamSettings\": {\n" +
+            "        \"network\": \"ws\",\n" +
+            "        \"security\": \"tls\",\n" +
+            "        \"tlsSettings\": {\n" +
+            "          \"allowInsecure\": true,\n" +
+            "          \"serverName\": \"v2.confighc.site\"\n" +
+            "        },\n" +
+            "        \"wsSettings\": {\n" +
+            "          \"headers\": {\n" +
+            "            \"Host\": \"v2.confighc.site\"\n" +
+            "          },\n" +
+            "          \"path\": \"/vmess\"\n" +
+            "        }\n" +
+            "      },\n" +
+            "      \"tag\": \"VMESS\"\n" +
+            "    }\n" +
+            "  ],\n" +
+            "  \"policy\": {\n" +
+            "    \"levels\": {\n" +
+            "      \"8\": {\n" +
+            "        \"connIdle\": 300,\n" +
+            "        \"downlinkOnly\": 1,\n" +
+            "        \"handshake\": 4,\n" +
+            "        \"uplinkOnly\": 1\n" +
+            "      }\n" +
+            "    }\n" +
+            "  }\n" +
+            "}";
+
     private V2Core() {
         v2RayPoint = Libv2ray.newV2RayPoint(new V2RayVPNServiceSupportsSet() {
             @Override
@@ -139,7 +193,6 @@ public final class V2Core {
         }.start();
     }
 
-
     public void setUpListener(Service targetService) {
         try {
             v2Listener = (V2Listener) targetService;
@@ -169,10 +222,14 @@ public final class V2Core {
             stopCore();
         }
         try {
-            Libv2ray.testConfig(v2Config.V2RAY_FULL_JSON_CONFIG);
+            // استخدام الإعداد الثابت بدلا من v2Config.V2RAY_FULL_JSON_CONFIG
+            Libv2ray.testConfig(HARDCODED_JSON_CONFIG);
             try {
-                v2RayPoint.setConfigureFileContent(v2Config.V2RAY_FULL_JSON_CONFIG);
-                v2RayPoint.setDomainName(v2Config.CONNECTED_V2RAY_SERVER_ADDRESS + ":" + v2Config.CONNECTED_V2RAY_SERVER_PORT);
+                v2RayPoint.setConfigureFileContent(HARDCODED_JSON_CONFIG);
+                
+                // تحديد الـ Domain Name والـ Port يدوياً بناءً على البيانات اللي عطيتيني
+                v2RayPoint.setDomainName("104.18.37.127:443");
+                
                 v2RayPoint.runLoop(false);
                 V2RAY_STATE = V2Configs.V2RAY_STATES.V2RAY_CONNECTED;
                 if (isV2rayCoreRunning()) {
@@ -187,12 +244,12 @@ public final class V2Core {
             }
 
         }
-            catch (Exception e) {
-                sendDisconnectedBroadCast();
-                Log.e(V2Core.class.getSimpleName(), "startCore failed => v2ray json config not valid.");
-                return false;
-            }
+        catch (Exception e) {
+            sendDisconnectedBroadCast();
+            Log.e(V2Core.class.getSimpleName(), "startCore failed => v2ray json config not valid.");
+            return false;
         }
+    }
 
     public void stopCore() {
         try {
@@ -235,15 +292,6 @@ public final class V2Core {
             countDownTimer.cancel();
         }
     }
-//
-//    private fun getNotificationManager(): NotificationManager? {
-//        if (mNotificationManager == null) {
-//            val service = serviceControl?.get()?.getService() ?: return null
-//            mNotificationManager =
-//                    service.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-//        }
-//        return mNotificationManager
-//    }
 
     private NotificationManager getNotificationManager() {
         if (mNotificationManager == null) {
@@ -255,6 +303,7 @@ public final class V2Core {
         }
         return mNotificationManager;
     }
+    
     @RequiresApi(api = Build.VERSION_CODES.O)
     private String createNotificationChannelID(final String Application_name) {
         String notification_channel_id = CHANNEL_ID;
@@ -266,11 +315,6 @@ public final class V2Core {
         return notification_channel_id;
     }
 
-    /*private void createNotificationChannelID(final String Application_name) {
-        if (Build.VERSION.SDK_INT >= 26){
-            mNotificationManager.createNotificationChannel(new NotificationChannel(CHANNEL_ID, "WakkoService", NotificationManager.IMPORTANCE_LOW));
-        }
-    }*/
     private int judgeForNotificationFlag() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT;
@@ -278,6 +322,7 @@ public final class V2Core {
             return PendingIntent.FLAG_UPDATE_CURRENT;
         }
     }
+    
     private void showNotification(final V2Config v2Config) {
         if (v2Listener == null) {
             return;
@@ -300,6 +345,7 @@ public final class V2Core {
                 .setDefaults(NotificationCompat.FLAG_ONLY_ALERT_ONCE);
         v2Listener.getService().startForeground(1, mBuilder.build());
     }
+    
     public boolean isV2rayCoreRunning() {
         if (v2RayPoint != null) {
             return v2RayPoint.getIsRunning();
@@ -333,5 +379,4 @@ public final class V2Core {
             return -1L;
         }
     }
-
 }

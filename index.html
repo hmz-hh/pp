@@ -4,58 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        /* هاد الجزء هو اللي كيخلي الخلفية شفافة وكيوسط البطاقة فالشاشة */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
+            background-color: transparent !important;
             margin: 0;
-            padding: 20px;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
+            height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        .container {
+        .card {
             background: #ffffff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             text-align: center;
-            width: 100%;
-            max-width: 300px;
+            width: 85%;
+            max-width: 320px;
         }
         h2 {
-            color: #5CB85C; /* اللون الأخضر اللي خدمنا بيه فالتصميم السابق */
+            color: #5CB85C;
             margin-top: 0;
+            font-size: 22px;
         }
         p {
             font-size: 15px;
-            line-height: 1.5;
-            color: #555;
+            color: #444;
+            line-height: 1.6;
+            margin-bottom: 20px;
         }
-        .btn {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 10px 20px;
-            background-color: #0088cc; /* لون تيليجرام */
-            color: #ffffff;
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .btn-tg {
+            padding: 12px;
+            background-color: #0088cc;
+            color: white;
             text-decoration: none;
             border-radius: 8px;
             font-weight: bold;
-            transition: background 0.3s;
         }
-        .btn:hover {
-            background-color: #0077b5;
+        .btn-skip {
+            padding: 12px;
+            background-color: #f1f1f1;
+            color: #555;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <div class="card">
         <h2>🚀 تحديث هام!</h2>
-        <p>تم إضافة سيرفرات جديدة لتحسين سرعة الاتصال واستقرار الشبكة.</p>
-        <p>المرجو الانضمام لقناتنا الرسمية لمتابعة كل جديد.</p>
-        <!-- بدل هاد الرابط بالرابط ديال قناتك فتيليجرام -->
-        <a href="https://t.me/free_net_mrr" class="btn">دخول للقناة</a>
+        <p>تم إضافة سيرفرات جديدة لتحسين سرعة الاتصال واستقرار الشبكة. يرجى الانضمام لقناتنا الرسمية.</p>
+        
+        <div class="buttons">
+            <a href="https://t.me/free_net_mrr" class="btn-tg">دخول للقناة</a>
+            <!-- هادا هو الزر اللي غيسد النافذة -->
+            <a href="app://close" class="btn-skip">تخطي</a>
+        </div>
     </div>
 
 </body>

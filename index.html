@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        /* هاد الجزء هو اللي كيخلي الخلفية شفافة وكيوسط البطاقة فالشاشة */
+        /* إعدادات الخلفية الشفافة والتوسيط */
         body {
             background-color: transparent !important;
             margin: 0;
@@ -13,61 +13,130 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Arial, sans-serif;
         }
-        .card {
-            background: #ffffff;
-            padding: 24px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            text-align: center;
+        
+        /* تصميم بطاقة VIP */
+        .vip-card {
+            background: linear-gradient(145deg, #121212, #1c1c28);
+            padding: 30px 20px 20px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
             width: 85%;
             max-width: 320px;
+            text-align: center;
+            border: 1px solid #d4af37; /* إطار ذهبي رقيق */
+            position: relative;
         }
+
+        /* تصميم التاج البارز الفوق */
+        .crown-icon {
+            font-size: 45px;
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #121212;
+            padding: 10px;
+            border-radius: 50%;
+            border: 2px solid #d4af37;
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+        }
+
         h2 {
-            color: #5CB85C;
-            margin-top: 0;
-            font-size: 22px;
+            color: #d4af37; /* لون ذهبي */
+            margin: 15px 0 10px;
+            font-size: 26px;
+            font-weight: 800;
+            text-transform: uppercase;
         }
-        p {
-            font-size: 15px;
-            color: #444;
-            line-height: 1.6;
-            margin-bottom: 20px;
+
+        .subtitle {
+            color: #a0a0a0;
+            font-size: 14px;
+            margin-bottom: 25px;
+            line-height: 1.5;
         }
+
+        /* لائحة المميزات */
+        .features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 25px 0;
+            text-align: right;
+        }
+
+        .features li {
+            font-size: 14px;
+            margin-bottom: 12px;
+            color: #eaeaea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* الأزرار */
         .buttons {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
         }
-        .btn-tg {
-            padding: 12px;
-            background-color: #0088cc;
-            color: white;
+
+        .btn-vip {
+            display: block;
+            background: linear-gradient(45deg, #d4af37, #ffdf00);
+            color: #000;
             text-decoration: none;
-            border-radius: 8px;
+            padding: 14px;
+            border-radius: 12px;
             font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.5);
+            transition: transform 0.2s ease;
         }
+
+        .btn-vip:active {
+            transform: scale(0.95);
+        }
+
         .btn-skip {
-            padding: 12px;
-            background-color: #f1f1f1;
-            color: #555;
+            display: block;
+            background: transparent;
+            color: #888;
             text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 12px;
+            border: 1px solid #444;
+            transition: all 0.3s;
+        }
+
+        .btn-skip:active {
+            background: #333;
+            color: #fff;
         }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <h2>🚀 تحديث هام!</h2>
-        <p>تم إضافة سيرفرات جديدة لتحسين سرعة الاتصال واستقرار الشبكة. يرجى الانضمام لقناتنا الرسمية.</p>
+    <div class="vip-card">
+        <div class="crown-icon">👑</div>
+        <h2>حساب VIP</h2>
+        <p class="subtitle">ارتقِ بتجربتك واحصل على إنترنت بلا قيود مع سيرفراتنا الممتازة.</p>
+        
+        <ul class="features">
+            <li>🚀 <b>سرعة قصوى:</b> تصفح وتحميل بدون تقطيع</li>
+            <li>🛡️ <b>حماية كاملة:</b> سيرفرات خاصة وآمنة 100%</li>
+            <li>🎮 <b>بنج منخفض:</b> مثالي للألعاب الأونلاين</li>
+            <li>🚫 <b>بدون إعلانات:</b> تجربة نظيفة ومريحة</li>
+        </ul>
         
         <div class="buttons">
-            <a href="https://t.me/free_net_mrr" class="btn-tg">دخول للقناة</a>
-            <!-- هادا هو الزر اللي غيسد النافذة -->
-            <a href="app://close" class="btn-skip">تخطي</a>
+            <!-- بدل الرابط بالرابط ديالك فتيليجرام أو واتساب -->
+            <a href="https://t.me/free_net_mrr" class="btn-vip">🌟 اشترك الآن 🌟</a>
+            
+            <!-- زر التخطي اللي كيسد النافذة -->
+            <a href="app://close" class="btn-skip">لا شكراً، سأستمر بالنسخة المجانية</a>
         </div>
     </div>
 

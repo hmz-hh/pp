@@ -1,263 +1,294 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<style>
+* {
+    box-sizing: border-box;
+}
 
-        body {
-            margin: 0;
-            padding: 10px;
-            background: transparent;
-            font-family: Arial, sans-serif;
-        }
+body {
+    margin: 0;
+    padding: 6px;
+    background: transparent;
+    font-family: Arial, sans-serif;
+}
 
-        .card {
-            width: 100%;
-            max-width: 430px;
-            position: relative;
-            overflow: hidden;
+/* MAIN CARD */
+.card {
+    width: 100%;
+    max-width: 430px;
+    margin: auto;
 
-            padding: 16px;
+    position: relative;
+    overflow: hidden;
 
-            background: linear-gradient(
-                145deg,
-                #18191d,
-                #0c0d10
-            );
+    padding: 11px 12px;
 
-            border: 1px solid rgba(0, 229, 255, 0.25);
-            border-radius: 20px;
+    background:
+        linear-gradient(135deg, #17191d 0%, #0b0d10 100%);
 
-            color: #fff;
+    border: 1px solid rgba(0,229,255,.22);
+    border-radius: 15px;
 
-            box-shadow:
-                0 10px 30px rgba(0,0,0,.35),
-                0 0 25px rgba(0,229,255,.07);
-        }
+    box-shadow:
+        0 7px 22px rgba(0,0,0,.35),
+        inset 0 0 20px rgba(0,229,255,.025);
 
-        .card::before {
-            content: "";
-            position: absolute;
-            top: -70px;
-            right: -70px;
-            width: 170px;
-            height: 170px;
-            background: rgba(0,229,255,.08);
-            filter: blur(40px);
-            border-radius: 50%;
-        }
+    color: #fff;
+}
 
-        /* Header */
-        .header {
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 14px;
-        }
+/* FUTURISTIC GLOW */
+.card::before {
+    content: "";
+    position: absolute;
 
-        .warning-icon {
-            width: 44px;
-            height: 44px;
-            min-width: 44px;
+    width: 100px;
+    height: 100px;
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+    top: -60px;
+    right: -30px;
 
-            background: rgba(229,57,53,.10);
-            border: 1px solid rgba(229,57,53,.30);
-            border-radius: 13px;
-        }
+    background: rgba(0,229,255,.10);
+    filter: blur(30px);
+    border-radius: 50%;
+}
 
-        .warning-icon svg {
-            width: 22px;
-            height: 22px;
-        }
+/* TOP */
+.top {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
 
-        .header-text {
-            flex: 1;
-        }
+/* ICON */
+.warning-icon {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
 
-        .title {
-            font-size: 14px;
-            font-weight: 800;
-            margin-bottom: 4px;
-        }
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-        .expiry {
-            color: #a0a4ad;
-            font-size: 11px;
-        }
+    background: rgba(229,57,53,.08);
+    border: 1px solid rgba(229,57,53,.25);
+    border-radius: 10px;
+}
 
-        .days {
-            color: #00e5ff;
-            font-size: 17px;
-            font-weight: 900;
-        }
+.warning-icon svg {
+    width: 18px;
+    height: 18px;
+}
 
-        /* Offers title */
-        .offers-title {
-            position: relative;
-            margin: 12px 0 9px;
+/* TEXT */
+.info {
+    flex: 1;
+    min-width: 0;
+}
 
-            display: flex;
-            align-items: center;
-            gap: 7px;
+.title {
+    font-size: 11px;
+    font-weight: 800;
+    color: #fff;
+}
 
-            color: #fff;
-            font-size: 12px;
-            font-weight: 800;
-        }
+.expiry {
+    margin-top: 2px;
+    font-size: 9px;
+    color: #7f858e;
+}
 
-        .offers-title svg {
-            width: 16px;
-            height: 16px;
-        }
+.days {
+    color: #00e5ff;
+    font-size: 14px;
+    font-weight: 900;
+}
 
-        /* Offers */
-        .offers {
-            position: relative;
-            display: flex;
-            gap: 9px;
-        }
+/* OFFERS */
+.offers {
+    position: relative;
 
-        .offer {
-            flex: 1;
-            padding: 12px 10px;
+    display: flex;
+    gap: 6px;
 
-            background: rgba(255,255,255,.035);
-            border: 1px solid rgba(255,255,255,.09);
-            border-radius: 14px;
+    margin-top: 8px;
+}
 
-            text-align: center;
-        }
+.offer {
+    flex: 1;
 
-        .offer.best {
-            background: rgba(0,229,255,.055);
-            border-color: rgba(0,229,255,.35);
-        }
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-        .offer-icon {
-            margin-bottom: 5px;
-        }
+    min-width: 0;
 
-        .offer-icon svg {
-            width: 19px;
-            height: 19px;
-        }
+    padding: 7px 9px;
 
-        .offer-name {
-            color: #b9bdc5;
-            font-size: 10px;
-            font-weight: 600;
-        }
+    background: rgba(255,255,255,.035);
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 10px;
+}
 
-        .price {
-            margin-top: 3px;
-            color: #fff;
-            font-size: 20px;
-            font-weight: 900;
-        }
+.offer.best {
+    border-color: rgba(0,229,255,.28);
+    background: rgba(0,229,255,.045);
+}
 
-        .currency {
-            color: #00e5ff;
-            font-size: 10px;
-            font-weight: 700;
-        }
+.offer-left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+}
 
-        .best-label {
-            display: inline-block;
-            margin-top: 4px;
+.offer-icon {
+    display: flex;
+    align-items: center;
+}
 
-            padding: 3px 7px;
+.offer-icon svg {
+    width: 14px;
+    height: 14px;
+}
 
-            background: rgba(0,229,255,.12);
-            border-radius: 20px;
+.offer-name {
+    color: #aeb3bb;
+    font-size: 8px;
+    white-space: nowrap;
+}
 
-            color: #00e5ff;
-            font-size: 8px;
-            font-weight: 800;
-        }
+.price {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 900;
+    white-space: nowrap;
+}
 
-        /* WhatsApp button */
-        .renew {
-            position: relative;
+.currency {
+    color: #00e5ff;
+    font-size: 7px;
+}
 
-            width: 100%;
-            margin-top: 12px;
-            padding: 11px;
+/* BEST */
+.best-label {
+    margin-left: 3px;
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 7px;
+    padding: 2px 4px;
 
-            background: linear-gradient(
-                135deg,
-                #00bfa5,
-                #008f7a
-            );
+    background: rgba(0,229,255,.10);
+    border-radius: 5px;
 
-            border-radius: 13px;
+    color: #00e5ff;
+    font-size: 6px;
+    font-weight: 800;
 
-            color: #fff;
-            font-size: 12px;
-            font-weight: 800;
+    white-space: nowrap;
+}
 
-            box-shadow:
-                0 6px 18px rgba(0,191,165,.20);
-        }
+/* BUTTON */
+.renew {
+    position: relative;
 
-        .renew svg {
-            width: 17px;
-            height: 17px;
-        }
+    width: 100%;
+    height: 31px;
 
-        .arrow {
-            font-size: 16px;
-        }
+    margin-top: 7px;
 
-        .note {
-            position: relative;
-            margin-top: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
 
-            color: #70757f;
-            text-align: center;
+    background: linear-gradient(
+        135deg,
+        #00bfa5,
+        #008f7a
+    );
 
-            font-size: 9px;
-        }
+    border-radius: 9px;
 
-        @media (max-width: 340px) {
-            .card {
-                padding: 13px;
-            }
+    color: #fff;
+    font-size: 9px;
+    font-weight: 800;
 
-            .offers {
-                gap: 6px;
-            }
+    box-shadow:
+        0 4px 12px rgba(0,191,165,.18);
+}
 
-            .offer {
-                padding: 10px 6px;
-            }
+.renew svg {
+    width: 14px;
+    height: 14px;
+}
 
-            .price {
-                font-size: 18px;
-            }
-        }
-    </style>
+.arrow {
+    font-size: 13px;
+}
+
+/* VERY SMALL DEVICES */
+@media (max-width: 320px) {
+
+    body {
+        padding: 4px;
+    }
+
+    .card {
+        padding: 9px;
+        border-radius: 13px;
+    }
+
+    .warning-icon {
+        width: 30px;
+        height: 30px;
+        min-width: 30px;
+    }
+
+    .warning-icon svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .title {
+        font-size: 10px;
+    }
+
+    .days {
+        font-size: 13px;
+    }
+
+    .offer {
+        padding: 6px;
+    }
+
+    .offer-name {
+        font-size: 7px;
+    }
+
+    .price {
+        font-size: 12px;
+    }
+
+    .best-label {
+        display: none;
+    }
+
+    .renew {
+        height: 29px;
+        font-size: 8px;
+    }
+}
+</style>
 </head>
 
 <body>
 
 <div class="card">
 
-    <!-- Header -->
-    <div class="header">
+    <!-- HEADER -->
+    <div class="top">
 
         <div class="warning-icon">
             <svg viewBox="0 0 24 24" fill="none"
@@ -267,26 +298,24 @@
                     d="M12 8V12"
                     stroke="#FF5252"
                     stroke-width="2"
-                    stroke-linecap="round"
-                />
+                    stroke-linecap="round"/>
 
                 <circle
                     cx="12"
                     cy="16"
                     r="1"
-                    fill="#FF5252"
-                />
+                    fill="#FF5252"/>
 
                 <path
                     d="M10.3 3.9L2.8 17C2 18.4 3 20.2 4.6 20.2H19.4C21 20.2 22 18.4 21.2 17L13.7 3.9C12.9 2.5 11.1 2.5 10.3 3.9Z"
                     stroke="#FF5252"
                     stroke-width="1.7"
-                    stroke-linejoin="round"
-                />
+                    stroke-linejoin="round"/>
             </svg>
         </div>
 
-        <div class="header-text">
+        <div class="info">
+
             <div class="title">
                 اشتراكك غادي يسالي قريب
             </div>
@@ -296,80 +325,45 @@
                 <span class="days">{{DAYS_LEFT}}</span>
                 أيام
             </div>
+
         </div>
 
     </div>
 
 
-    <!-- Offers title -->
-    <div class="offers-title">
-
-        <svg viewBox="0 0 24 24" fill="none"
-             xmlns="http://www.w3.org/2000/svg">
-
-            <path
-                d="M20 12V7H4V12"
-                stroke="#00E5FF"
-                stroke-width="1.7"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            />
-
-            <path
-                d="M4 7L12 3L20 7"
-                stroke="#00E5FF"
-                stroke-width="1.7"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            />
-
-            <path
-                d="M5 12V20H19V12"
-                stroke="#00E5FF"
-                stroke-width="1.7"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            />
-
-        </svg>
-
-        العروض الحالية
-
-    </div>
-
-
-    <!-- Offers -->
+    <!-- OFFERS -->
     <div class="offers">
 
-        <!-- 1 Month -->
+        <!-- 1 MONTH -->
         <div class="offer">
 
-            <div class="offer-icon">
-                <svg viewBox="0 0 24 24" fill="none"
-                     xmlns="http://www.w3.org/2000/svg">
+            <div class="offer-left">
 
-                    <rect
-                        x="4"
-                        y="5"
-                        width="16"
-                        height="15"
-                        rx="2"
-                        stroke="#00E5FF"
-                        stroke-width="1.7"
-                    />
+                <div class="offer-icon">
+                    <svg viewBox="0 0 24 24" fill="none"
+                         xmlns="http://www.w3.org/2000/svg">
 
-                    <path
-                        d="M8 3V7M16 3V7M4 10H20"
-                        stroke="#00E5FF"
-                        stroke-width="1.7"
-                        stroke-linecap="round"
-                    />
+                        <rect
+                            x="4"
+                            y="5"
+                            width="16"
+                            height="15"
+                            rx="2"
+                            stroke="#00E5FF"
+                            stroke-width="1.7"/>
 
-                </svg>
-            </div>
+                        <path
+                            d="M8 3V7M16 3V7M4 10H20"
+                            stroke="#00E5FF"
+                            stroke-width="1.7"
+                            stroke-linecap="round"/>
+                    </svg>
+                </div>
 
-            <div class="offer-name">
-                اشتراك شهر
+                <div class="offer-name">
+                    شهر
+                </div>
+
             </div>
 
             <div class="price">
@@ -379,25 +373,27 @@
         </div>
 
 
-        <!-- 2 Months -->
+        <!-- 2 MONTHS -->
         <div class="offer best">
 
-            <div class="offer-icon">
-                <svg viewBox="0 0 24 24" fill="none"
-                     xmlns="http://www.w3.org/2000/svg">
+            <div class="offer-left">
 
-                    <path
-                        d="M12 3L14.5 8.5L20.5 9L16 13L17.5 19L12 16L6.5 19L8 13L3.5 9L9.5 8.5L12 3Z"
-                        stroke="#00E5FF"
-                        stroke-width="1.6"
-                        stroke-linejoin="round"
-                    />
+                <div class="offer-icon">
+                    <svg viewBox="0 0 24 24" fill="none"
+                         xmlns="http://www.w3.org/2000/svg">
 
-                </svg>
-            </div>
+                        <path
+                            d="M12 3L14.5 8.5L20.5 9L16 13L17.5 19L12 16L6.5 19L8 13L3.5 9L9.5 8.5L12 3Z"
+                            stroke="#00E5FF"
+                            stroke-width="1.6"
+                            stroke-linejoin="round"/>
+                    </svg>
+                </div>
 
-            <div class="offer-name">
-                اشتراك شهرين
+                <div class="offer-name">
+                    شهرين
+                </div>
+
             </div>
 
             <div class="price">
@@ -405,7 +401,7 @@
             </div>
 
             <div class="best-label">
-                أفضل عرض
+                الأفضل
             </div>
 
         </div>
@@ -413,7 +409,7 @@
     </div>
 
 
-    <!-- WhatsApp -->
+    <!-- WHATSAPP -->
     <a
         href="https://wa.me/212771796228?text=مرحبا، بغيت نجدد الاشتراك. ID: {{ANDROID_ID}}"
         style="text-decoration:none;"
@@ -428,29 +424,23 @@
                     d="M20 11.5C20 16.2 16.2 20 11.5 20C10 20 8.5 19.6 7.2 18.9L4 20L5.1 16.9C4.4 15.6 4 14.1 4 12.5C4 7.8 7.8 4 12.5 4C16.6 4 20 7.4 20 11.5Z"
                     stroke="white"
                     stroke-width="1.7"
-                    stroke-linejoin="round"
-                />
+                    stroke-linejoin="round"/>
 
                 <path
                     d="M8.5 9.5C8.8 11.8 11.2 14.2 13.5 14.5"
                     stroke="white"
                     stroke-width="1.7"
-                    stroke-linecap="round"
-                />
+                    stroke-linecap="round"/>
 
             </svg>
 
-            تواصل معنا للتجديد
+            تجديد الاشتراك
 
             <span class="arrow">›</span>
 
         </div>
 
     </a>
-
-    <div class="note">
-        اختار العرض المناسب ليك وتواصل معنا عبر WhatsApp
-    </div>
 
 </div>
 

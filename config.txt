@@ -6,7 +6,7 @@ hide_ads_vip=true
 
 [MODULES]
 ads
-#warning
+warning
 details
 
 [WARNING]
@@ -342,7 +342,7 @@ body {
         <div class="info">
 
             <div class="title">
-                اشتراكك غادي يسالي قريب
+                اشتراكك غادي يسييييالي قريب
             </div>
 
             <div class="expiry">

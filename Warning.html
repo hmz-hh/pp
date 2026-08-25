@@ -15,63 +15,52 @@
             font-family: Arial, sans-serif;
         }
 
-        .warning-card {
+        .card {
             width: 100%;
-            max-width: 420px;
+            max-width: 430px;
             position: relative;
             overflow: hidden;
 
-            display: flex;
-            align-items: center;
-            gap: 13px;
-
-            padding: 14px 16px;
+            padding: 16px;
 
             background: linear-gradient(
-                135deg,
-                #18191d 0%,
-                #0d0e11 100%
+                145deg,
+                #18191d,
+                #0c0d10
             );
 
-            border: 1px solid rgba(229, 57, 53, 0.65);
-            border-radius: 18px;
+            border: 1px solid rgba(0, 229, 255, 0.25);
+            border-radius: 20px;
 
             color: #fff;
-            text-decoration: none;
 
             box-shadow:
-                0 8px 25px rgba(0, 0, 0, 0.35),
-                0 0 18px rgba(229, 57, 53, 0.12);
-
-            transition: transform 0.2s ease;
+                0 10px 30px rgba(0,0,0,.35),
+                0 0 25px rgba(0,229,255,.07);
         }
 
-        .warning-card:active {
-            transform: scale(0.98);
-        }
-
-        /* Glow */
-        .warning-card::before {
+        .card::before {
             content: "";
             position: absolute;
-
-            top: -45px;
-            left: -45px;
-
-            width: 130px;
-            height: 130px;
-
-            background: rgba(229, 57, 53, 0.13);
-            filter: blur(30px);
-
+            top: -70px;
+            right: -70px;
+            width: 170px;
+            height: 170px;
+            background: rgba(0,229,255,.08);
+            filter: blur(40px);
             border-radius: 50%;
         }
 
-        /* Icon */
-        .icon {
+        /* Header */
+        .header {
             position: relative;
-            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
 
+        .warning-icon {
             width: 44px;
             height: 44px;
             min-width: 44px;
@@ -80,112 +69,184 @@
             align-items: center;
             justify-content: center;
 
-            background: rgba(229, 57, 53, 0.10);
-
-            border: 1px solid rgba(229, 57, 53, 0.30);
+            background: rgba(229,57,53,.10);
+            border: 1px solid rgba(229,57,53,.30);
             border-radius: 13px;
-
-            box-shadow:
-                inset 0 0 12px rgba(229, 57, 53, 0.05);
         }
 
-        .icon svg {
+        .warning-icon svg {
             width: 22px;
             height: 22px;
         }
 
-        /* Content */
-        .content {
-            position: relative;
-            z-index: 1;
-
+        .header-text {
             flex: 1;
-            min-width: 0;
         }
 
         .title {
+            font-size: 14px;
+            font-weight: 800;
             margin-bottom: 4px;
-
-            color: #ffffff;
-
-            font-size: 13px;
-            font-weight: 700;
         }
 
-        .days-line {
-            color: #d8dbe0;
-
-            font-size: 13px;
-            font-weight: 500;
+        .expiry {
+            color: #a0a4ad;
+            font-size: 11px;
         }
 
         .days {
             color: #00e5ff;
+            font-size: 17px;
+            font-weight: 900;
+        }
 
-            font-size: 18px;
+        /* Offers title */
+        .offers-title {
+            position: relative;
+            margin: 12px 0 9px;
+
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            color: #fff;
+            font-size: 12px;
             font-weight: 800;
         }
 
-        .subtitle {
-            margin-top: 3px;
-
-            color: #858a94;
-
-            font-size: 10.5px;
-            font-weight: 500;
+        .offers-title svg {
+            width: 16px;
+            height: 16px;
         }
 
-        /* Renew Button */
+        /* Offers */
+        .offers {
+            position: relative;
+            display: flex;
+            gap: 9px;
+        }
+
+        .offer {
+            flex: 1;
+            padding: 12px 10px;
+
+            background: rgba(255,255,255,.035);
+            border: 1px solid rgba(255,255,255,.09);
+            border-radius: 14px;
+
+            text-align: center;
+        }
+
+        .offer.best {
+            background: rgba(0,229,255,.055);
+            border-color: rgba(0,229,255,.35);
+        }
+
+        .offer-icon {
+            margin-bottom: 5px;
+        }
+
+        .offer-icon svg {
+            width: 19px;
+            height: 19px;
+        }
+
+        .offer-name {
+            color: #b9bdc5;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .price {
+            margin-top: 3px;
+            color: #fff;
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .currency {
+            color: #00e5ff;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .best-label {
+            display: inline-block;
+            margin-top: 4px;
+
+            padding: 3px 7px;
+
+            background: rgba(0,229,255,.12);
+            border-radius: 20px;
+
+            color: #00e5ff;
+            font-size: 8px;
+            font-weight: 800;
+        }
+
+        /* WhatsApp button */
         .renew {
             position: relative;
-            z-index: 1;
 
-            padding: 9px 13px;
+            width: 100%;
+            margin-top: 12px;
+            padding: 11px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
 
             background: linear-gradient(
                 135deg,
-                #e53935,
-                #c62828
+                #00bfa5,
+                #008f7a
             );
 
-            border-radius: 11px;
+            border-radius: 13px;
 
-            color: #ffffff;
-
-            font-size: 11px;
+            color: #fff;
+            font-size: 12px;
             font-weight: 800;
 
-            white-space: nowrap;
-
             box-shadow:
-                0 5px 14px rgba(229, 57, 53, 0.25);
+                0 6px 18px rgba(0,191,165,.20);
+        }
+
+        .renew svg {
+            width: 17px;
+            height: 17px;
         }
 
         .arrow {
-            margin-left: 3px;
-            font-size: 13px;
+            font-size: 16px;
         }
 
-        /* Small screens */
+        .note {
+            position: relative;
+            margin-top: 8px;
+
+            color: #70757f;
+            text-align: center;
+
+            font-size: 9px;
+        }
+
         @media (max-width: 340px) {
-            .warning-card {
-                padding: 12px;
-                gap: 9px;
+            .card {
+                padding: 13px;
             }
 
-            .icon {
-                width: 40px;
-                height: 40px;
-                min-width: 40px;
+            .offers {
+                gap: 6px;
             }
 
-            .renew {
-                padding: 8px 10px;
-                font-size: 10px;
+            .offer {
+                padding: 10px 6px;
             }
 
-            .subtitle {
-                display: none;
+            .price {
+                font-size: 18px;
             }
         }
     </style>
@@ -193,71 +254,205 @@
 
 <body>
 
-<a
-    href="https://wa.me/212771796228?text=مرحبا، بغيت نجدد الاشتراك. ID: {{ANDROID_ID}}"
-    class="warning-card"
->
+<div class="card">
 
-    <!-- Real SVG Icon -->
-    <div class="icon">
+    <!-- Header -->
+    <div class="header">
 
-        <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-        >
+        <div class="warning-icon">
+            <svg viewBox="0 0 24 24" fill="none"
+                 xmlns="http://www.w3.org/2000/svg">
+
+                <path
+                    d="M12 8V12"
+                    stroke="#FF5252"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                />
+
+                <circle
+                    cx="12"
+                    cy="16"
+                    r="1"
+                    fill="#FF5252"
+                />
+
+                <path
+                    d="M10.3 3.9L2.8 17C2 18.4 3 20.2 4.6 20.2H19.4C21 20.2 22 18.4 21.2 17L13.7 3.9C12.9 2.5 11.1 2.5 10.3 3.9Z"
+                    stroke="#FF5252"
+                    stroke-width="1.7"
+                    stroke-linejoin="round"
+                />
+            </svg>
+        </div>
+
+        <div class="header-text">
+            <div class="title">
+                اشتراكك غادي يسالي قريب
+            </div>
+
+            <div class="expiry">
+                باقي
+                <span class="days">{{DAYS_LEFT}}</span>
+                أيام
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Offers title -->
+    <div class="offers-title">
+
+        <svg viewBox="0 0 24 24" fill="none"
+             xmlns="http://www.w3.org/2000/svg">
 
             <path
-                d="M12 8V12"
-                stroke="#FF5252"
-                stroke-width="2"
-                stroke-linecap="round"
-            />
-
-            <circle
-                cx="12"
-                cy="16"
-                r="1"
-                fill="#FF5252"
-            />
-
-            <path
-                d="M10.3 3.9L2.8 17C2 18.4 3 20.2 4.6 20.2H19.4C21 20.2 22 18.4 21.2 17L13.7 3.9C12.9 2.5 11.1 2.5 10.3 3.9Z"
-                stroke="#FF5252"
+                d="M20 12V7H4V12"
+                stroke="#00E5FF"
                 stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+
+            <path
+                d="M4 7L12 3L20 7"
+                stroke="#00E5FF"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+
+            <path
+                d="M5 12V20H19V12"
+                stroke="#00E5FF"
+                stroke-width="1.7"
+                stroke-linecap="round"
                 stroke-linejoin="round"
             />
 
         </svg>
 
-    </div>
-
-    <!-- Text -->
-    <div class="content">
-
-        <div class="title">
-            اشتراكك غادي يسالي قريب
-        </div>
-
-        <div class="days-line">
-            باقي
-            <span class="days">{{DAYS_LEFT}}</span>
-            أيام
-        </div>
-
-        <div class="subtitle">
-            جدد الاشتراك باش تبقى متصل بدون انقطاع
-        </div>
+        العروض الحالية
 
     </div>
 
-    <!-- Renew Button -->
-    <div class="renew">
-        تجديد
-        <span class="arrow">›</span>
+
+    <!-- Offers -->
+    <div class="offers">
+
+        <!-- 1 Month -->
+        <div class="offer">
+
+            <div class="offer-icon">
+                <svg viewBox="0 0 24 24" fill="none"
+                     xmlns="http://www.w3.org/2000/svg">
+
+                    <rect
+                        x="4"
+                        y="5"
+                        width="16"
+                        height="15"
+                        rx="2"
+                        stroke="#00E5FF"
+                        stroke-width="1.7"
+                    />
+
+                    <path
+                        d="M8 3V7M16 3V7M4 10H20"
+                        stroke="#00E5FF"
+                        stroke-width="1.7"
+                        stroke-linecap="round"
+                    />
+
+                </svg>
+            </div>
+
+            <div class="offer-name">
+                اشتراك شهر
+            </div>
+
+            <div class="price">
+                20 <span class="currency">DH</span>
+            </div>
+
+        </div>
+
+
+        <!-- 2 Months -->
+        <div class="offer best">
+
+            <div class="offer-icon">
+                <svg viewBox="0 0 24 24" fill="none"
+                     xmlns="http://www.w3.org/2000/svg">
+
+                    <path
+                        d="M12 3L14.5 8.5L20.5 9L16 13L17.5 19L12 16L6.5 19L8 13L3.5 9L9.5 8.5L12 3Z"
+                        stroke="#00E5FF"
+                        stroke-width="1.6"
+                        stroke-linejoin="round"
+                    />
+
+                </svg>
+            </div>
+
+            <div class="offer-name">
+                اشتراك شهرين
+            </div>
+
+            <div class="price">
+                35 <span class="currency">DH</span>
+            </div>
+
+            <div class="best-label">
+                أفضل عرض
+            </div>
+
+        </div>
+
     </div>
 
-</a>
+
+    <!-- WhatsApp -->
+    <a
+        href="https://wa.me/212771796228?text=مرحبا، بغيت نجدد الاشتراك. ID: {{ANDROID_ID}}"
+        style="text-decoration:none;"
+    >
+
+        <div class="renew">
+
+            <svg viewBox="0 0 24 24" fill="none"
+                 xmlns="http://www.w3.org/2000/svg">
+
+                <path
+                    d="M20 11.5C20 16.2 16.2 20 11.5 20C10 20 8.5 19.6 7.2 18.9L4 20L5.1 16.9C4.4 15.6 4 14.1 4 12.5C4 7.8 7.8 4 12.5 4C16.6 4 20 7.4 20 11.5Z"
+                    stroke="white"
+                    stroke-width="1.7"
+                    stroke-linejoin="round"
+                />
+
+                <path
+                    d="M8.5 9.5C8.8 11.8 11.2 14.2 13.5 14.5"
+                    stroke="white"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                />
+
+            </svg>
+
+            تواصل معنا للتجديد
+
+            <span class="arrow">›</span>
+
+        </div>
+
+    </a>
+
+    <div class="note">
+        اختار العرض المناسب ليك وتواصل معنا عبر WhatsApp
+    </div>
+
+</div>
 
 </body>
 </html>

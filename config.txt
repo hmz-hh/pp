@@ -1,0 +1,29 @@
+[SETTINGS]
+
+warning_days=7
+
+hide_ads_vip=true
+
+[MODULES]
+ads
+#warning
+details
+
+[WARNING]
+<div>
+    <h1>هنا كود التحذير</h1>
+    <p>سيتم تجاهله لأننا وضعنا # قبل warning في الأعلى</p>
+</div>
+
+[ADS]
+<div style="background: white; padding: 20px; text-align: center;">
+    <h2>إعلان هام</h2>
+    <p>هذا الإعلان سيظهر للمجانين فقط، ولن يظهر لـ VIP.</p>
+    <a href="app://close">إغلاق</a>
+</div>
+
+[DETAILS]
+<div>
+    <h2>تفاصيل الحساب</h2>
+    <p>هذا الكود سيتم حفظه لاستخدامه في صفحة التفاصيل</p>
+</div>

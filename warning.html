@@ -1,163 +1,28 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            padding: 12px;
-            background: transparent;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: Arial, sans-serif;
-        }
-
-        .warning-card {
-            width: 100%;
-            max-width: 430px;
-            position: relative;
-            overflow: hidden;
-            padding: 14px 16px;
-            border-radius: 18px;
-            text-decoration: none;
-            color: #fff;
-
-            background:
-                linear-gradient(135deg, rgba(30,30,34,.97), rgba(15,15,18,.97));
-
-            border: 1px solid rgba(229, 57, 53, .65);
-
-            box-shadow:
-                0 8px 25px rgba(0,0,0,.35),
-                0 0 25px rgba(229,57,53,.12);
-
-            transition: transform .2s ease, box-shadow .2s ease;
-        }
-
-        .warning-card:active {
-            transform: scale(.98);
-        }
-
-        .warning-card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 4px;
-            height: 100%;
-            background: #E53935;
-            box-shadow: 0 0 15px rgba(229,57,53,.8);
-        }
-
-        .content {
-            display: flex;
-            align-items: center;
-            gap: 13px;
-        }
-
-        .icon {
-            width: 42px;
-            height: 42px;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 13px;
-
-            background: rgba(229,57,53,.13);
-            border: 1px solid rgba(229,57,53,.35);
-
-            font-size: 21px;
-        }
-
-        .text {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .title {
-            font-size: 14px;
-            font-weight: 700;
-            line-height: 1.6;
-            margin-bottom: 3px;
-        }
-
-        .days {
-            color: #00E5FF;
-            font-size: 18px;
-            font-weight: 800;
-            text-shadow: 0 0 10px rgba(0,229,255,.35);
-        }
-
-        .renew {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            margin-top: 2px;
-
-            color: #bdbdbd;
-            font-size: 11px;
-            font-weight: 500;
-        }
-
-        .arrow {
-            width: 30px;
-            height: 30px;
-            flex-shrink: 0;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 50%;
-
-            background: #E53935;
+        body { margin: 0; padding: 0; background: transparent; display: flex; justify-content: center; }
+        .warning-pill {
+            background: #141416;
             color: white;
-
-            font-size: 16px;
-            box-shadow: 0 3px 12px rgba(229,57,53,.35);
+            font-family: Arial, sans-serif;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            border: 1.5px solid #E53935;
+            box-shadow: 0px 5px 15px rgba(229, 57, 53, 0.3);
+            text-align: center;
         }
+        .highlight { color: #00E5FF; }
     </style>
 </head>
-
 <body>
-
-<a
-    href="https://wa.me/212771796228?text=مرحبا، بغيت نجدد الاشتراك. ID: {{ANDROID_ID}}"
-    class="warning-card"
->
-
-    <div class="content">
-
-        <div class="icon">
-            ⚠️
-        </div>
-
-        <div class="text">
-            <div class="title">
-                اشتراكك ينتهي بعد
-                <span class="days">{{DAYS_LEFT}}</span>
-                أيام
-            </div>
-
-            <div class="renew">
-                اضغط هنا للتجديد عبر WhatsApp
-            </div>
-        </div>
-
-        <div class="arrow">
-            ←
-        </div>
-
-    </div>
-
-</a>
-
+    <a href="https://wa.me/212771796228?text=مرحبا، بغيت نجدد الاشتراك. ID: {{ANDROID_ID}}" class="warning-pill">
+        ⚠️ اشتراكك ينتهي بعد <span class="highlight">{{DAYS_LEFT}}</span> أيام. اضغط للتجديد
+    </a>
 </body>
 </html>

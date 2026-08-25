@@ -480,12 +480,198 @@ body {
 </html>
 
 [ADS]
-<div style="background: white; padding: 20px; text-align: center;">
-    <h2>إعلان هام</h2>
-    <p>هذا الإعلان سيظهر للمجانين فقط، ولن يظهر لـ VIP.</p>
-    <a href="app://close">إغلاق</a>
-</div>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: transparent !important;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Arial, sans-serif;
+        }
+        
+        .vip-card {
+            background: linear-gradient(145deg, #121212, #1c1c28);
+            padding: 35px 20px 20px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+            width: 85%;
+            max-width: 320px;
+            text-align: center;
+            border: 1px solid #d4af37;
+            position: relative;
+        }
 
+        .crown-container {
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #121212;
+            padding: 12px;
+            border-radius: 50%;
+            border: 2px solid #d4af37;
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h2 {
+            color: #d4af37;
+            margin: 15px 0 10px;
+            font-size: 26px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            color: #a0a0a0;
+            font-size: 14px;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 25px 0;
+            text-align: right;
+        }
+
+        .features li {
+            font-size: 14px;
+            margin-bottom: 15px;
+            color: #eaeaea;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* تنسيق الأيقونات باش يكون حجمهم مقاد مع النص */
+        .svg-icon {
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn-vip {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(45deg, #d4af37, #ffdf00);
+            color: #000;
+            text-decoration: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.5);
+            transition: transform 0.2s ease;
+        }
+
+        .btn-vip:active {
+            transform: scale(0.95);
+        }
+
+        .btn-skip {
+            display: block;
+            background: transparent;
+            color: #888;
+            text-decoration: none;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 12px;
+            border: 1px solid #444;
+            transition: all 0.3s;
+        }
+
+        .btn-skip:active {
+            background: #333;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="vip-card">
+        <!-- أيقونة التاج SVG -->
+        <div class="crown-container">
+            <svg width="35" height="35" viewBox="0 0 24 24" fill="#d4af37">
+                <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/>
+            </svg>
+        </div>
+        
+        <h2>حساب VIP</h2>
+        <p class="subtitle">ارتقِ بتجربتك واحصل على إنترنت بلا قيود مع سيرفراتنا الممتازة.</p>
+        
+        <ul class="features">
+            <li>
+                <!-- أيقونة الصاروخ SVG -->
+                <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
+                    <path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
+                    <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5-4 5-4l3 3"></path>
+                </svg>
+                <b>سرعة قصوى:</b> تصفح وتحميل بدون تقطيع
+            </li>
+            <li>
+                <!-- أيقونة الدرع SVG -->
+                <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+                <b>حماية كاملة:</b> سيرفرات خاصة وآمنة 100%
+            </li>
+            <li>
+                <!-- أيقونة الألعاب SVG -->
+                <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="6" width="20" height="12" rx="2" ry="2"></rect>
+                    <path d="M6 12h4"></path>
+                    <path d="M8 10v4"></path>
+                    <path d="M15 13h.01"></path>
+                    <path d="M18 11h.01"></path>
+                </svg>
+                <b>بنج منخفض:</b> مثالي للألعاب الأونلاين
+            </li>
+            <li>
+                <!-- أيقونة منع الإعلانات SVG -->
+                <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M4.93 4.93l14.14 14.14"></path>
+                </svg>
+                <b>بدون إعلانات:</b> تجربة نظيفة ومريحة
+            </li>
+        </ul>
+        
+        <div class="buttons">
+            <a href="https://t.me/free_net_mrr" class="btn-vip">
+                <!-- أيقونة البرق وسط الزر -->
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                </svg>
+                اشترك الآن
+            </a>
+            
+            <a href="app://close" class="btn-skip">لا شكراً، سأستمر بالنسخة المجانية</a>
+        </div>
+    </div>
+
+</body>
+</html>
 [DETAILS]
 <div>
     <h2>تفاصيل الحساب</h2>

@@ -1,1 +1,36 @@
-<!--DISABLE_WEB_UI-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { 
+            margin: 0; 
+            padding: 0; 
+            background: transparent; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+        }
+        .alert-box {
+            background: #E53935;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            padding: 10px 22px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: bold;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <a href="https://wa.me/212771796228?text=مرحبا،%20أريد%20تجديد%20اشتراكي.%20الآيدي:%20{{ANDROID_ID}}" class="alert-box">
+        ⚠️ تنبيه: متبقي لديك <span style="text-decoration: underline;">{{DAYS_LEFT}} أيام</span> فقط. اضغط هنا للتجديد فوراً!
+    </a>
+</body>
+</html>

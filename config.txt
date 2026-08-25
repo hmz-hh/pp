@@ -2,7 +2,7 @@
 
 warning_days=7
 
-hide_ads_vip=true
+hide_ads_vip=false
 
 [MODULES]
 ads

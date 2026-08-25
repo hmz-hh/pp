@@ -1,104 +1,458 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VIP Details</title>
+
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
-            padding: 20px;
-            background-color: #050505;
-            color: #ffffff;
+            padding: 10px;
+            background: transparent;
             font-family: Arial, sans-serif;
         }
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
+
+        .card {
+            width: 100%;
+            max-width: 430px;
+            position: relative;
+            overflow: hidden;
+
+            padding: 16px;
+
+            background: linear-gradient(
+                145deg,
+                #18191d,
+                #0c0d10
+            );
+
+            border: 1px solid rgba(0, 229, 255, 0.25);
+            border-radius: 20px;
+
+            color: #fff;
+
+            box-shadow:
+                0 10px 30px rgba(0,0,0,.35),
+                0 0 25px rgba(0,229,255,.07);
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: -70px;
+            right: -70px;
+            width: 170px;
+            height: 170px;
+            background: rgba(0,229,255,.08);
+            filter: blur(40px);
+            border-radius: 50%;
+        }
+
+        /* Header */
+        .header {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .warning-icon {
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: rgba(229,57,53,.10);
+            border: 1px solid rgba(229,57,53,.30);
+            border-radius: 13px;
+        }
+
+        .warning-icon svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .header-text {
+            flex: 1;
+        }
+
+        .title {
+            font-size: 14px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .expiry {
+            color: #a0a4ad;
+            font-size: 11px;
+        }
+
+        .days {
+            color: #00e5ff;
+            font-size: 17px;
+            font-weight: 900;
+        }
+
+        /* Offers title */
+        .offers-title {
+            position: relative;
+            margin: 12px 0 9px;
+
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            color: #fff;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .offers-title svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Offers */
+        .offers {
+            position: relative;
+            display: flex;
+            gap: 9px;
+        }
+
+        .offer {
+            flex: 1;
+            padding: 12px 10px;
+
+            background: rgba(255,255,255,.035);
+            border: 1px solid rgba(255,255,255,.09);
+            border-radius: 14px;
+
             text-align: center;
         }
-        h2 {
-            color: #00E5FF;
-            font-size: 22px;
+
+        .offer.best {
+            background: rgba(0,229,255,.055);
+            border-color: rgba(0,229,255,.35);
+        }
+
+        .offer-icon {
             margin-bottom: 5px;
         }
-        p.subtitle {
-            color: #8F8F99;
-            font-size: 13px;
-            margin-bottom: 20px;
+
+        .offer-icon svg {
+            width: 19px;
+            height: 19px;
         }
-        .card {
-            background: #111115;
-            border: 1px solid #22222d;
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 15px;
-            text-align: right;
+
+        .offer-name {
+            color: #b9bdc5;
+            font-size: 10px;
+            font-weight: 600;
         }
-        .card h3 {
-            color: #FFD700;
-            font-size: 16px;
-            margin-top: 0;
+
+        .price {
+            margin-top: 3px;
+            color: #fff;
+            font-size: 20px;
+            font-weight: 900;
         }
-        .badge {
-            background: rgba(0, 229, 255, 0.1);
-            color: #00E5FF;
-            padding: 8px 15px;
-            border-radius: 30px;
-            font-size: 13px;
+
+        .currency {
+            color: #00e5ff;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .best-label {
             display: inline-block;
-            margin-bottom: 15px;
-            border: 1px solid rgba(0, 229, 255, 0.3);
+            margin-top: 4px;
+
+            padding: 3px 7px;
+
+            background: rgba(0,229,255,.12);
+            border-radius: 20px;
+
+            color: #00e5ff;
+            font-size: 8px;
+            font-weight: 800;
         }
-        .btn-wa {
-            background: linear-gradient(135deg, #25D366, #128C7E);
-            color: white;
-            text-decoration: none;
-            padding: 14px 25px;
-            border-radius: 30px;
-            font-weight: bold;
-            display: block;
-            text-align: center;
-            margin-top: 25px;
-            box-shadow: 0px 4px 15px rgba(37, 211, 102, 0.3);
-        }
-        .ads-space {
-            background: #1a1a24;
-            border: 2px dashed #33334d;
-            border-radius: 12px;
-            padding: 25px;
-            margin-top: 20px;
-            color: #7a7a99;
+
+        /* WhatsApp button */
+        .renew {
+            position: relative;
+
+            width: 100%;
+            margin-top: 12px;
+            padding: 11px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+
+            background: linear-gradient(
+                135deg,
+                #00bfa5,
+                #008f7a
+            );
+
+            border-radius: 13px;
+
+            color: #fff;
             font-size: 12px;
+            font-weight: 800;
+
+            box-shadow:
+                0 6px 18px rgba(0,191,165,.20);
+        }
+
+        .renew svg {
+            width: 17px;
+            height: 17px;
+        }
+
+        .arrow {
+            font-size: 16px;
+        }
+
+        .note {
+            position: relative;
+            margin-top: 8px;
+
+            color: #70757f;
+            text-align: center;
+
+            font-size: 9px;
+        }
+
+        @media (max-width: 340px) {
+            .card {
+                padding: 13px;
+            }
+
+            .offers {
+                gap: 6px;
+            }
+
+            .offer {
+                padding: 10px 6px;
+            }
+
+            .price {
+                font-size: 18px;
+            }
         }
     </style>
 </head>
+
 <body>
 
-    <div class="container">
-        <h2>اشتراك VIP المدفوع</h2>
-        <p class="subtitle">أفضل تجربة أنترنيت سريعة ومستقرة</p>
+<div class="card">
 
-        <div class="badge">
-            معرف الجهاز (ID): <b style="color:#fff;">{{ANDROID_ID}}</b>
+    <!-- Header -->
+    <div class="header">
+
+        <div class="warning-icon">
+            <svg viewBox="0 0 24 24" fill="none"
+                 xmlns="http://www.w3.org/2000/svg">
+
+                <path
+                    d="M12 8V12"
+                    stroke="#FF5252"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                />
+
+                <circle
+                    cx="12"
+                    cy="16"
+                    r="1"
+                    fill="#FF5252"
+                />
+
+                <path
+                    d="M10.3 3.9L2.8 17C2 18.4 3 20.2 4.6 20.2H19.4C21 20.2 22 18.4 21.2 17L13.7 3.9C12.9 2.5 11.1 2.5 10.3 3.9Z"
+                    stroke="#FF5252"
+                    stroke-width="1.7"
+                    stroke-linejoin="round"
+                />
+            </svg>
         </div>
 
-        <div class="card">
-            <h3>💎 العروض المتاحة</h3>
-            <p>• شهر واحد: <b>20 درهم</b></p>
-            <p>• شهرين: <b>35 درهم</b></p>
-            <p style="margin-bottom:0;">الأيام المتبقية في اشتراكك: <b style="color:#00E5FF;">{{DAYS_LEFT}} أيام</b></p>
+        <div class="header-text">
+            <div class="title">
+                اشتراكك غادي يسالي قريب
+            </div>
+
+            <div class="expiry">
+                باقي
+                <span class="days">{{DAYS_LEFT}}</span>
+                أيام
+            </div>
         </div>
 
-        <!-- مكان مخصص لإضافة إعلانات مستقبلاً -->
-        <div class="ads-space">
-            📢 مكان مخصص للإعلانات (Ad Banner Space)
-        </div>
-
-        <a href="https://wa.me/212771796228?text=مرحبا،%20أريد%20الاشتراك%20في%20VIP.%20الآيدي:%20{{ANDROID_ID}}" class="btn-wa">
-            تواصل عبر واتساب للتفعيل 🚀
-        </a>
     </div>
+
+
+    <!-- Offers title -->
+    <div class="offers-title">
+
+        <svg viewBox="0 0 24 24" fill="none"
+             xmlns="http://www.w3.org/2000/svg">
+
+            <path
+                d="M20 12V7H4V12"
+                stroke="#00E5FF"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+
+            <path
+                d="M4 7L12 3L20 7"
+                stroke="#00E5FF"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+
+            <path
+                d="M5 12V20H19V12"
+                stroke="#00E5FF"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            />
+
+        </svg>
+
+        العروض الحالية
+
+    </div>
+
+
+    <!-- Offers -->
+    <div class="offers">
+
+        <!-- 1 Month -->
+        <div class="offer">
+
+            <div class="offer-icon">
+                <svg viewBox="0 0 24 24" fill="none"
+                     xmlns="http://www.w3.org/2000/svg">
+
+                    <rect
+                        x="4"
+                        y="5"
+                        width="16"
+                        height="15"
+                        rx="2"
+                        stroke="#00E5FF"
+                        stroke-width="1.7"
+                    />
+
+                    <path
+                        d="M8 3V7M16 3V7M4 10H20"
+                        stroke="#00E5FF"
+                        stroke-width="1.7"
+                        stroke-linecap="round"
+                    />
+
+                </svg>
+            </div>
+
+            <div class="offer-name">
+                اشتراك شهر
+            </div>
+
+            <div class="price">
+                20 <span class="currency">DH</span>
+            </div>
+
+        </div>
+
+
+        <!-- 2 Months -->
+        <div class="offer best">
+
+            <div class="offer-icon">
+                <svg viewBox="0 0 24 24" fill="none"
+                     xmlns="http://www.w3.org/2000/svg">
+
+                    <path
+                        d="M12 3L14.5 8.5L20.5 9L16 13L17.5 19L12 16L6.5 19L8 13L3.5 9L9.5 8.5L12 3Z"
+                        stroke="#00E5FF"
+                        stroke-width="1.6"
+                        stroke-linejoin="round"
+                    />
+
+                </svg>
+            </div>
+
+            <div class="offer-name">
+                اشتراك شهرين
+            </div>
+
+            <div class="price">
+                35 <span class="currency">DH</span>
+            </div>
+
+            <div class="best-label">
+                أفضل عرض
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- WhatsApp -->
+    <a
+        href="https://wa.me/212771796228?text=مرحبا، بغيت نجدد الاشتراك. ID: {{ANDROID_ID}}"
+        style="text-decoration:none;"
+    >
+
+        <div class="renew">
+
+            <svg viewBox="0 0 24 24" fill="none"
+                 xmlns="http://www.w3.org/2000/svg">
+
+                <path
+                    d="M20 11.5C20 16.2 16.2 20 11.5 20C10 20 8.5 19.6 7.2 18.9L4 20L5.1 16.9C4.4 15.6 4 14.1 4 12.5C4 7.8 7.8 4 12.5 4C16.6 4 20 7.4 20 11.5Z"
+                    stroke="white"
+                    stroke-width="1.7"
+                    stroke-linejoin="round"
+                />
+
+                <path
+                    d="M8.5 9.5C8.8 11.8 11.2 14.2 13.5 14.5"
+                    stroke="white"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                />
+
+            </svg>
+
+            تواصل معنا للتجديد
+
+            <span class="arrow">›</span>
+
+        </div>
+
+    </a>
+
+    <div class="note">
+        اختار العرض المناسب ليك وتواصل معنا عبر WhatsApp
+    </div>
+
+</div>
 
 </body>
 </html>

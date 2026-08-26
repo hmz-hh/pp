@@ -5,8 +5,8 @@ offline_ads=false
 
 [MODULES]
 ads
-warning
-details
+#warning
+#details
 
 [WARNING]
 <!DOCTYPE html>

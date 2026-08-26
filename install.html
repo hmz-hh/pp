@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحميل تطبيق درع VPN - تصفح بأمان</title>
+    
+    <!-- خطوط جوجل (Cairo) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- مكتبة الأيقونات (Font Awesome) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* إعدادات عامة */
+        :root {
+            --primary-color: #1a237e;
+            --secondary-color: #00d2ff;
+            --btn-color: #00e676;
+            --text-color: #333;
+            --bg-color: #f4f7f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* الهيدر / القسم العلوي */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #3949ab 100%);
+            color: white;
+            padding: 100px 20px;
+            text-align: center;
+            border-bottom-left-radius: 50px;
+            border-bottom-right-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.9;
+        }
+
+        /* زر التحميل */
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            background-color: var(--btn-color);
+            color: #fff;
+            text-decoration: none;
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            border-radius: 50px;
+            box-shadow: 0 10px 20px rgba(0, 230, 118, 0.4);
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0, 230, 118, 0.6);
+            background-color: #00c853;
+        }
+
+        .download-info {
+            display: flex;
+            flex-direction: column;
+            text-align: right;
+        }
+
+        .download-info span:first-child {
+            font-size: 1.2rem;
+        }
+
+        .download-info span:last-child {
+            font-size: 0.8rem;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        /* أنيميشن للزر */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 230, 118, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(0, 230, 118, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 230, 118, 0); }
+        }
+
+        /* قسم المميزات */
+        .features {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .features-title {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            margin-bottom: 50px;
+            font-weight: 800;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 40px 20px;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .feature-card p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        /* الفوتر */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        /* التجاوب مع الهواتف (Responsive) */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; }
+            .hero p { font-size: 1rem; }
+            .download-btn { padding: 12px 30px; }
+            .features-title { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- القسم العلوي -->
+    <header class="hero">
+        <i class="fa-solid fa-shield-halved" style="font-size: 4rem; margin-bottom: 20px; color: var(--secondary-color);"></i>
+        <h1>درع VPN</h1>
+        <p>تصفح الإنترنت بحرية تامة وبدون حدود. احمِ خصوصيتك وفك الحظر عن جميع المواقع والتطبيقات بأسرع الخوادم العالمية.</p>
+        
+        <!-- حط الرابط ديال APK ديالك فبلاصت # لتحت -->
+        <a href="#" class="download-btn">
+            <i class="fa-brands fa-android fa-2x"></i>
+            <div class="download-info">
+                <span>تحميل APK مجاناً</span>
+                <span>الإصدار 2.4 | الحجم: 15MB</span>
+            </div>
+        </a>
+    </header>
+
+    <!-- قسم المميزات -->
+    <section class="features">
+        <h2 class="features-title">علاش تختار درع VPN؟</h2>
+        
+        <div class="features-grid">
+            <!-- ميزة 1 -->
+            <div class="feature-card">
+                <i class="fa-solid fa-rocket feature-icon"></i>
+                <h3>سرعة صاروخية</h3>
+                <p>خوادم محسنة وموزعة فجميع أنحاء العالم باش تضمن ليك أسرع اتصال بدون تقطعات، مثالي للألعاب والمشاهدة.</p>
+            </div>
+
+            <!-- ميزة 2 -->
+            <div class="feature-card">
+                <i class="fa-solid fa-user-secret feature-icon"></i>
+                <h3>حماية الخصوصية</h3>
+                <p>تشفير عسكري من الدرجة الأولى. مانسجلوش البيانات ديالك، وكنضمنو ليك تصفح مخفي ومجهول الهوية 100%.</p>
+            </div>
+
+            <!-- ميزة 3 -->
+            <div class="feature-card">
+                <i class="fa-solid fa-earth-americas feature-icon"></i>
+                <h3>تجاوز الحجب</h3>
+                <p>افتح كاع المواقع، التطبيقات، والشبكات الاجتماعية المحجوبة فبلدك بضغطة زر وحدة وبكل سهولة.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- الفوتر -->
+    <footer>
+        <p>جميع الحقوق محفوظة &copy; 2024 تطبيق درع VPN</p>
+    </footer>
+
+</body>
+</html>

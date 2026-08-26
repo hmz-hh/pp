@@ -19,7 +19,6 @@ body {
     width: 92%;
     max-width: 390px;
     margin: auto;
-
     position: relative;
     overflow: hidden;
 
@@ -44,10 +43,8 @@ body {
 .card::before {
     content: "";
     position: absolute;
-
     width: 100px;
     height: 100px;
-
     top: -60px;
     right: -30px;
 
@@ -59,7 +56,6 @@ body {
 /* HEADER */
 .top {
     position: relative;
-
     display: flex;
     align-items: center;
     gap: 9px;
@@ -110,10 +106,8 @@ body {
 /* OFFERS */
 .offers {
     position: relative;
-
     display: flex;
     gap: 6px;
-
     margin-top: 8px;
 }
 
@@ -173,7 +167,6 @@ body {
 
 .best-label {
     margin-left: 3px;
-
     padding: 2px 4px;
 
     background: rgba(0,229,255,.10);
@@ -182,8 +175,37 @@ body {
     color: #00e5ff;
     font-size: 6px;
     font-weight: 800;
-
     white-space: nowrap;
+}
+
+/* FREE RENEW MESSAGE */
+.free-note {
+    position: relative;
+
+    margin-top: 7px;
+    padding: 6px 8px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+    background: rgba(0,229,255,.045);
+    border: 1px solid rgba(0,229,255,.12);
+    border-radius: 8px;
+
+    color: #9ea5ad;
+    font-size: 8px;
+    font-weight: 700;
+}
+
+.free-note svg {
+    width: 13px;
+    height: 13px;
+}
+
+.free-note strong {
+    color: #00e5ff;
 }
 
 /* WHATSAPP BUTTON */
@@ -216,7 +238,7 @@ body {
         0 4px 13px rgba(0,191,165,.20);
 }
 
-/* WhatsApp Icon */
+/* WHATSAPP ICON */
 .whatsapp-icon {
     width: 17px;
     height: 17px;
@@ -225,9 +247,8 @@ body {
     align-items: center;
     justify-content: center;
 
-    border-radius: 50%;
-
     background: #fff;
+    border-radius: 50%;
 }
 
 .whatsapp-icon svg {
@@ -288,6 +309,10 @@ body {
         display: none;
     }
 
+    .free-note {
+        font-size: 7px;
+    }
+
     .renew {
         height: 29px;
         font-size: 8px;
@@ -304,6 +329,7 @@ body {
     <div class="top">
 
         <div class="warning-icon">
+
             <svg viewBox="0 0 24 24" fill="none"
                  xmlns="http://www.w3.org/2000/svg">
 
@@ -324,7 +350,9 @@ body {
                     stroke="#FF5252"
                     stroke-width="1.7"
                     stroke-linejoin="round"/>
+
             </svg>
+
         </div>
 
         <div class="info">
@@ -336,7 +364,7 @@ body {
             <div class="expiry">
                 باقي
                 <span class="days">{{DAYS_LEFT}}</span>
-                أيام جدد قبل ميسالي وتبقا بلاش
+                أيام
             </div>
 
         </div>
@@ -353,6 +381,7 @@ body {
             <div class="offer-left">
 
                 <div class="offer-icon">
+
                     <svg viewBox="0 0 24 24" fill="none"
                          xmlns="http://www.w3.org/2000/svg">
 
@@ -370,7 +399,9 @@ body {
                             stroke="#00E5FF"
                             stroke-width="1.7"
                             stroke-linecap="round"/>
+
                     </svg>
+
                 </div>
 
                 <div class="offer-name">
@@ -392,6 +423,7 @@ body {
             <div class="offer-left">
 
                 <div class="offer-icon">
+
                     <svg viewBox="0 0 24 24" fill="none"
                          xmlns="http://www.w3.org/2000/svg">
 
@@ -400,7 +432,9 @@ body {
                             stroke="#00E5FF"
                             stroke-width="1.6"
                             stroke-linejoin="round"/>
+
                     </svg>
+
                 </div>
 
                 <div class="offer-name">
@@ -422,9 +456,56 @@ body {
     </div>
 
 
+    <!-- FREE NOTE -->
+    <div class="free-note">
+
+        <svg viewBox="0 0 24 24" fill="none"
+             xmlns="http://www.w3.org/2000/svg">
+
+            <path
+                d="M20 12V7H4V12"
+                stroke="#00E5FF"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"/>
+
+            <path
+                d="M5 12V20H19V12"
+                stroke="#00E5FF"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"/>
+
+            <path
+                d="M12 7V20"
+                stroke="#00E5FF"
+                stroke-width="1.7"
+                stroke-linecap="round"/>
+
+            <path
+                d="M12 7H8.5C7.4 7 6.5 6.1 6.5 5C6.5 3.9 7.4 3 8.5 3C11 3 12 7 12 7Z"
+                stroke="#00E5FF"
+                stroke-width="1.5"
+                stroke-linejoin="round"/>
+
+            <path
+                d="M12 7H15.5C16.6 7 17.5 6.1 17.5 5C17.5 3.9 16.6 3 15.5 3C13 3 12 7 12 7Z"
+                stroke="#00E5FF"
+                stroke-width="1.5"
+                stroke-linejoin="round"/>
+
+        </svg>
+
+        <span>
+            جدد قبل ميسالي وتبقا <strong>بلاش</strong>
+        </span>
+
+    </div>
+
+
     <!-- WHATSAPP -->
     <a
-        href="https://wa.me/212771796228?text=مرحبا، بغيت نجدد الاشتراك. ID: {{ANDROID_ID}}"
+        href="https://wa.me/212690068362?text=مرحبا، بغيت نجدد الاشتراك"
         style="text-decoration:none;"
     >
 
@@ -442,13 +523,11 @@ body {
                         d="M20 11.5C20 16.19 16.19 20 11.5 20C10.01 20 8.6 19.61 7.36 18.92L4 20L5.08 16.74C4.39 15.5 4 14.09 4 12.5C4 7.81 7.81 4 12.5 4C16.64 4 20 7.36 20 11.5Z"
                         stroke="#009B83"
                         stroke-width="1.8"
-                        stroke-linejoin="round"
-                    />
+                        stroke-linejoin="round"/>
 
                     <path
                         d="M8.3 9.2C8.3 9.2 8.65 8.6 9.05 8.55C9.35 8.51 9.75 8.52 9.98 8.92L10.62 10.05C10.78 10.34 10.72 10.58 10.55 10.78L10.1 11.28C10.1 11.28 10.7 12.55 12.05 13.35C13.4 14.15 14.05 14.25 14.05 14.25L14.6 13.62C14.8 13.4 15.1 13.34 15.37 13.48L16.58 14.1C16.93 14.28 17.08 14.6 16.95 14.95C16.78 15.4 16.2 16.12 15.55 16.25C14.65 16.43 13.1 15.9 11.45 14.85C9.8 13.8 8.7 12.4 8.35 11.25C8.05 10.27 8.05 9.55 8.3 9.2Z"
-                        fill="#009B83"
-                    />
+                        fill="#009B83"/>
 
                 </svg>
 

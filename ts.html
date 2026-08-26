@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 6px;
+    background: transparent;
+    font-family: Arial, sans-serif;
+}
+
+.card {
+    width: 92%;
+    max-width: 390px;
+    margin: auto;
+
+    position: relative;
+    overflow: hidden;
+
+    padding: 10px 11px;
+
+    background: linear-gradient(
+        135deg,
+        #17191d 0%,
+        #0b0d10 100%
+    );
+
+    border: 1px solid rgba(0,229,255,.22);
+    border-radius: 15px;
+
+    box-shadow:
+        0 7px 22px rgba(0,0,0,.35),
+        inset 0 0 20px rgba(0,229,255,.025);
+
+    color: #fff;
+}
+
+.card::before {
+    content: "";
+    position: absolute;
+
+    width: 100px;
+    height: 100px;
+
+    top: -60px;
+    right: -30px;
+
+    background: rgba(0,229,255,.10);
+    filter: blur(30px);
+    border-radius: 50%;
+}
+
+/* HEADER */
+.top {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.warning-icon {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(229,57,53,.08);
+    border: 1px solid rgba(229,57,53,.25);
+    border-radius: 10px;
+}
+
+.warning-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.info {
+    flex: 1;
+    min-width: 0;
+}
+
+.title {
+    font-size: 11px;
+    font-weight: 800;
+    color: #fff;
+}
+
+.expiry {
+    margin-top: 2px;
+    font-size: 9px;
+    color: #7f858e;
+}
+
+.days {
+    color: #00e5ff;
+    font-size: 14px;
+    font-weight: 900;
+}
+
+/* OFFERS */
+.offers {
+    position: relative;
+
+    display: flex;
+    gap: 6px;
+
+    margin-top: 8px;
+}
+
+.offer {
+    flex: 1;
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 7px 8px;
+
+    background: rgba(255,255,255,.035);
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 10px;
+}
+
+.offer.best {
+    border-color: rgba(0,229,255,.28);
+    background: rgba(0,229,255,.045);
+}
+
+.offer-left {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.offer-icon {
+    display: flex;
+    align-items: center;
+}
+
+.offer-icon svg {
+    width: 14px;
+    height: 14px;
+}
+
+.offer-name {
+    color: #aeb3bb;
+    font-size: 8px;
+    white-space: nowrap;
+}
+
+.price {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 900;
+    white-space: nowrap;
+}
+
+.currency {
+    color: #00e5ff;
+    font-size: 7px;
+}
+
+.best-label {
+    margin-left: 3px;
+
+    padding: 2px 4px;
+
+    background: rgba(0,229,255,.10);
+    border-radius: 5px;
+
+    color: #00e5ff;
+    font-size: 6px;
+    font-weight: 800;
+
+    white-space: nowrap;
+}
+
+/* WHATSAPP BUTTON */
+.renew {
+    position: relative;
+
+    width: 100%;
+    height: 31px;
+
+    margin-top: 7px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    background: linear-gradient(
+        135deg,
+        #00c9a7,
+        #009b83
+    );
+
+    border-radius: 9px;
+
+    color: #fff;
+    font-size: 9px;
+    font-weight: 800;
+
+    box-shadow:
+        0 4px 13px rgba(0,191,165,.20);
+}
+
+/* WhatsApp Icon */
+.whatsapp-icon {
+    width: 17px;
+    height: 17px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #fff;
+}
+
+.whatsapp-icon svg {
+    width: 12px;
+    height: 12px;
+}
+
+.arrow {
+    font-size: 13px;
+    margin-left: 1px;
+}
+
+/* SMALL DEVICES */
+@media (max-width: 320px) {
+
+    body {
+        padding: 4px;
+    }
+
+    .card {
+        width: 94%;
+        padding: 9px;
+        border-radius: 13px;
+    }
+
+    .warning-icon {
+        width: 30px;
+        height: 30px;
+        min-width: 30px;
+    }
+
+    .warning-icon svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .title {
+        font-size: 10px;
+    }
+
+    .days {
+        font-size: 13px;
+    }
+
+    .offer {
+        padding: 6px;
+    }
+
+    .offer-name {
+        font-size: 7px;
+    }
+
+    .price {
+        font-size: 12px;
+    }
+
+    .best-label {
+        display: none;
+    }
+
+    .renew {
+        height: 29px;
+        font-size: 8px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <!-- WARNING ICON -->
+    <div class="top">
+
+        <div class="warning-icon">
+            <svg viewBox="0 0 24 24" fill="none"
+                 xmlns="http://www.w3.org/2000/svg">
+
+                <path
+                    d="M12 8V12"
+                    stroke="#FF5252"
+                    stroke-width="2"
+                    stroke-linecap="round"/>
+
+                <circle
+                    cx="12"
+                    cy="16"
+                    r="1"
+                    fill="#FF5252"/>
+
+                <path
+                    d="M10.3 3.9L2.8 17C2 18.4 3 20.2 4.6 20.2H19.4C21 20.2 22 18.4 21.2 17L13.7 3.9C12.9 2.5 11.1 2.5 10.3 3.9Z"
+                    stroke="#FF5252"
+                    stroke-width="1.7"
+                    stroke-linejoin="round"/>
+            </svg>
+        </div>
+
+        <div class="info">
+
+            <div class="title">
+                اشتراكك غادي يسالي قريب
+            </div>
+
+            <div class="expiry">
+                باقي
+                <span class="days">{{DAYS_LEFT}}</span>
+                أيام جدد الاشتراك قبل متبقا بلاش
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- OFFERS -->
+    <div class="offers">
+
+        <!-- 1 MONTH -->
+        <div class="offer">
+
+            <div class="offer-left">
+
+                <div class="offer-icon">
+                    <svg viewBox="0 0 24 24" fill="none"
+                         xmlns="http://www.w3.org/2000/svg">
+
+                        <rect
+                            x="4"
+                            y="5"
+                            width="16"
+                            height="15"
+                            rx="2"
+                            stroke="#00E5FF"
+                            stroke-width="1.7"/>
+
+                        <path
+                            d="M8 3V7M16 3V7M4 10H20"
+                            stroke="#00E5FF"
+                            stroke-width="1.7"
+                            stroke-linecap="round"/>
+                    </svg>
+                </div>
+
+                <div class="offer-name">
+                    شهر
+                </div>
+
+            </div>
+
+            <div class="price">
+                20 <span class="currency">DH</span>
+            </div>
+
+        </div>
+
+
+        <!-- 2 MONTHS -->
+        <div class="offer best">
+
+            <div class="offer-left">
+
+                <div class="offer-icon">
+                    <svg viewBox="0 0 24 24" fill="none"
+                         xmlns="http://www.w3.org/2000/svg">
+
+                        <path
+                            d="M12 3L14.5 8.5L20.5 9L16 13L17.5 19L12 16L6.5 19L8 13L3.5 9L9.5 8.5L12 3Z"
+                            stroke="#00E5FF"
+                            stroke-width="1.6"
+                            stroke-linejoin="round"/>
+                    </svg>
+                </div>
+
+                <div class="offer-name">
+                    شهرين
+                </div>
+
+            </div>
+
+            <div class="price">
+                35 <span class="currency">DH</span>
+            </div>
+
+            <div class="best-label">
+                الأفضل
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- WHATSAPP -->
+    <a
+        href="https://wa.me/212771796228?text=مرحبا، بغيت نجدد الاشتراك. ID: {{ANDROID_ID}}"
+        style="text-decoration:none;"
+    >
+
+        <div class="renew">
+
+            <div class="whatsapp-icon">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+
+                    <path
+                        d="M20 11.5C20 16.19 16.19 20 11.5 20C10.01 20 8.6 19.61 7.36 18.92L4 20L5.08 16.74C4.39 15.5 4 14.09 4 12.5C4 7.81 7.81 4 12.5 4C16.64 4 20 7.36 20 11.5Z"
+                        stroke="#009B83"
+                        stroke-width="1.8"
+                        stroke-linejoin="round"
+                    />
+
+                    <path
+                        d="M8.3 9.2C8.3 9.2 8.65 8.6 9.05 8.55C9.35 8.51 9.75 8.52 9.98 8.92L10.62 10.05C10.78 10.34 10.72 10.58 10.55 10.78L10.1 11.28C10.1 11.28 10.7 12.55 12.05 13.35C13.4 14.15 14.05 14.25 14.05 14.25L14.6 13.62C14.8 13.4 15.1 13.34 15.37 13.48L16.58 14.1C16.93 14.28 17.08 14.6 16.95 14.95C16.78 15.4 16.2 16.12 15.55 16.25C14.65 16.43 13.1 15.9 11.45 14.85C9.8 13.8 8.7 12.4 8.35 11.25C8.05 10.27 8.05 9.55 8.3 9.2Z"
+                        fill="#009B83"
+                    />
+
+                </svg>
+
+            </div>
+
+            تجديد الاشتراك
+
+            <span class="arrow">›</span>
+
+        </div>
+
+    </a>
+
+</div>
+
+</body>
+</html>

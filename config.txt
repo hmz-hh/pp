@@ -672,7 +672,117 @@ body {
 </body>
 </html>
 [DETAILS]
-<div>
-    <h2>تفاصيل الحساب</h2>
-    <p>هذا الكود سيتم حفظه لاستخدامه في صفحة التفاصيل</p>
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    padding:5px;
+    background:transparent;
+    font-family:Arial,sans-serif;
+}
+
+.card{
+    width:92%;
+    max-width:380px;
+    margin:auto;
+    padding:9px 11px;
+
+    display:flex;
+    align-items:center;
+    gap:9px;
+
+    background:#101216;
+    border:1px solid #e5393540;
+    border-radius:13px;
+    color:#fff;
+}
+
+.icon{
+    width:32px;
+    height:32px;
+    min-width:32px;
+
+    display:grid;
+    place-items:center;
+
+    background:#e5393512;
+    border:1px solid #e5393540;
+    border-radius:9px;
+}
+
+.icon svg{
+    width:17px;
+}
+
+.text{
+    flex:1;
+    min-width:0;
+}
+
+.title{
+    font-size:11px;
+    font-weight:bold;
+}
+
+.days{
+    color:#00e5ff;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.btn{
+    padding:8px 11px;
+
+    background:#00a889;
+    border-radius:8px;
+
+    color:white;
+    font-size:9px;
+    font-weight:bold;
+    white-space:nowrap;
+}
+</style>
+</head>
+
+<body>
+
+<a href="https://wa.me/212690068362?text=مرحبا، بغيت نجدد الاشتراك"
+   style="text-decoration:none">
+
+<div class="card">
+
+    <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 8v4"
+                  stroke="#ff5252"
+                  stroke-width="2"
+                  stroke-linecap="round"/>
+            <circle cx="12" cy="16" r="1"
+                    fill="#ff5252"/>
+            <path d="M10.3 3.9L2.8 17c-.8 1.4.2 3.2 1.8 3.2h14.8c1.6 0 2.6-1.8 1.8-3.2L13.7 3.9c-.8-1.4-2.6-1.4-3.4 0Z"
+                  stroke="#ff5252"
+                  stroke-width="1.7"/>
+        </svg>
+    </div>
+
+    <div class="text">
+        <div class="title">الاشتراك قرب يسالي</div>
+        <span class="days">{{DAYS_LEFT}} أيام</span>
+    </div>
+
+    <div class="btn">
+        جدد
+    </div>
+
+</div>
+
+</a>
+
+</body>
+</html>
 </div>

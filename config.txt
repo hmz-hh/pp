@@ -1,12 +1,12 @@
 [SETTINGS]
 
-warning_days=1
+warning_days=3
 
-hide_ads_vip=false
+hide_ads_vip=true
 
 [MODULES]
 ads
-#warning
+warning
 details
 
 [WARNING]

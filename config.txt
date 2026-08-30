@@ -1,7 +1,7 @@
 [SETTINGS]
-warning_days=7
+warning_days=15
 hide_ads_vip=true
-offline_ads=true
+offline_ads=false
 
 [MODULES]
 ads

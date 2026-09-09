@@ -4,7 +4,8 @@
 trap 'clear; echo -e "\n\e[1;33m [!] Action cancelled. Returning to menu...\e[0m"; sleep 1' SIGINT
 
 # --- تحديد المسار المطلق التلقائي لمنع التكرار ---
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# --- تحديد المسار بناءً على مسار العمل الحالي (حيت السكريبت كيتفك فـ tmp) ---
+SCRIPT_DIR="$PWD"
 JSON_FILE="$SCRIPT_DIR/data.json"
 USERS_FILE="$SCRIPT_DIR/users_db.json"
 BANNED_FILE="$SCRIPT_DIR/banned.json"

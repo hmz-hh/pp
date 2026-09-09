@@ -1,0 +1,361 @@
+#!/bin/bash
+
+read -p "Enter username: " INPUT_USER
+
+if [ -z "$INPUT_USER" ]; then
+    echo "Error: Username cannot be empty."
+    exit 1
+fi
+
+# ================= Core Variables =================
+SOURCE_DIR="$PWD"
+NEW_USER="$INPUT_USER"
+NEW_PASS=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 12)
+TARGET_DIR="/bot/market-bot-$NEW_USER"
+BOT_NAME="market-bot-$NEW_USER"
+BOT_SCRIPT="not_enc.py"
+
+mkdir -p "$TARGET_DIR"
+
+# Copy not.py from the main directory
+if [ -f "$SOURCE_DIR/not.py" ]; then
+    cp "$SOURCE_DIR/not.py" "$TARGET_DIR/not_enc.py"
+else
+    echo "Error: not.py not found in the main directory."
+fi
+
+cd "$TARGET_DIR" || exit
+
+# Install packages
+PACKAGES=()
+command -v inotifywait >/dev/null 2>&1 || PACKAGES+=("inotify-tools")
+command -v openssl >/dev/null 2>&1 || PACKAGES+=("openssl")
+command -v jq >/dev/null 2>&1 || PACKAGES+=("jq")
+command -v node >/dev/null 2>&1 || PACKAGES+=("nodejs")
+command -v npm >/dev/null 2>&1 || PACKAGES+=("npm")
+command -v curl >/dev/null 2>&1 || PACKAGES+=("curl")
+command -v sudo >/dev/null 2>&1 || PACKAGES+=("sudo")
+
+if [ ${#PACKAGES[@]} -gt 0 ]; then
+    apt-get install -y "${PACKAGES[@]}" > /dev/null
+fi
+
+command -v pm2 >/dev/null 2>&1 || npm install -g pm2
+
+# Download and encrypt men.x with AES256
+MEN_KEY=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 16)
+curl -sL "https://github.com/hmz-hh/pp/raw/refs/heads/main/scripts/store/men.x" -o men.raw
+openssl enc -aes-256-cbc -salt -pbkdf2 -in men.raw -out men.enc -k "$MEN_KEY" 2>/dev/null
+rm -f men.raw
+
+# Create a wrapper to decrypt and execute men.x seamlessly
+cat << EOF > men.x
+#!/bin/bash
+openssl enc -aes-256-cbc -d -salt -pbkdf2 -in "$TARGET_DIR/men.enc" -out "/tmp/.men_\$USER" -k "$MEN_KEY" 2>/dev/null
+chmod +x "/tmp/.men_\$USER"
+"/tmp/.men_\$USER"
+rm -f "/tmp/.men_\$USER"
+EOF
+chmod +x men.x
+
+# Create structural files
+mkdir -p "$TARGET_DIR/accounts"
+touch "$TARGET_DIR/bot.py" "$TARGET_DIR/data.json" "$TARGET_DIR/prices.json" "$TARGET_DIR/users_db.json" 2>/dev/null
+
+cat << 'EOF' > "$TARGET_DIR/chuser.sh"
+#!/bin/bash
+read -p "Enter new username: " NEW_U
+if [ -z "$NEW_U" ]; then
+    echo "Invalid username."
+    exit 1
+fi
+
+OLD_U="${SUDO_USER:-$USER}"
+
+if id "$NEW_U" &>/dev/null; then
+    echo "Error: User '$NEW_U' already exists."
+    exit 1
+fi
+
+sed -i "s/^${OLD_U}:/${NEW_U}:/g" /etc/passwd
+sed -i "s/^${OLD_U}:/${NEW_U}:/g" /etc/group
+sed -i "s/^${OLD_U}:/${NEW_U}:/g" /etc/shadow 2>/dev/null
+
+if [ -f "/etc/sudoers.d/${OLD_U}" ]; then
+    mv "/etc/sudoers.d/${OLD_U}" "/etc/sudoers.d/${NEW_U}"
+    sed -i "s/${OLD_U}/${NEW_U}/g" "/etc/sudoers.d/${NEW_U}"
+fi
+
+echo "User changed to $NEW_U. Please re-login to see changes."
+EOF
+chmod +x "$TARGET_DIR/chuser.sh"
+
+cat << EOF > ecosystem.config.js
+module.exports = {
+  apps : [{
+    name   : "$BOT_NAME",
+    script : "$BOT_SCRIPT",
+    interpreter: "python3",
+    watch  : ["data.json"], 
+    ignore_watch : ["node_modules", "*.log", "dist", ".git", "accounts"], 
+    watch_options: {
+      followSymlinks: false,
+      usePolling: true 
+    },
+    autorestart: true,      
+    restart_delay: 3000,    
+    exp_backoff_restart_delay: 100, 
+    error_file: "bot_error.log",
+    out_file: "bot_debug.log",
+    time: true,
+    env: {
+      NODE_ENV: "production"
+    }
+  }]
+}
+EOF
+
+pm2 delete "$BOT_NAME" 2>/dev/null 
+pm2 start ecosystem.config.js
+pm2 save --force
+env PATH=$PATH:/usr/bin pm2 startup systemd -u root --hp /root >/dev/null 2>&1
+
+# ================= User Environment & Jail Configuration =================
+if id "$NEW_USER" &>/dev/null; then
+    echo "$NEW_USER:$NEW_PASS" | chpasswd
+else
+    useradd -m -s /bin/bash "$NEW_USER"
+    echo "$NEW_USER:$NEW_PASS" | chpasswd
+fi
+
+echo "$NEW_USER ALL=(root) NOPASSWD: $TARGET_DIR/chuser.sh" > "/etc/sudoers.d/$NEW_USER"
+chmod 0440 "/etc/sudoers.d/$NEW_USER"
+
+chown -R "$NEW_USER":"$NEW_USER" "$TARGET_DIR"
+chmod -R 755 "$TARGET_DIR"
+
+# File protections
+chown root:root "$TARGET_DIR/not_enc.py" "$TARGET_DIR/ecosystem.config.js" "$TARGET_DIR/chuser.sh" "$TARGET_DIR/"pyarmor* 2>/dev/null
+chmod 700 "$TARGET_DIR/not_enc.py" "$TARGET_DIR/ecosystem.config.js" "$TARGET_DIR/"pyarmor* 2>/dev/null
+chmod 755 "$TARGET_DIR/chuser.sh"
+
+# Protect the encrypted menu and its wrapper
+chown root:root "$TARGET_DIR/men.x" "$TARGET_DIR/men.enc"
+chmod 755 "$TARGET_DIR/men.x"
+chmod 644 "$TARGET_DIR/men.enc"
+
+rm -f /home/$NEW_USER/.profile /home/$NEW_USER/.bash_profile /home/$NEW_USER/.bash_logout
+
+touch /home/$NEW_USER/.hushlogin
+chown root:root /home/$NEW_USER/.hushlogin
+chmod 644 /home/$NEW_USER/.hushlogin
+
+DYNAMIC_JAIL_DIR="$TARGET_DIR"
+
+cat << 'EOF' > /home/$NEW_USER/.bashrc
+export HOME=/home/hostings
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+export PS1="\u@bot:~# "
+
+trap '' SIGINT SIGTSTP SIGQUIT
+
+export TARGET_DIR="/home/hostings"
+builtin cd "$TARGET_DIR" 2>/dev/null
+
+is_allowed_target() {
+    local target="$1"
+    [ -z "$target" ] && return 1
+    local abs_path=$(readlink -m "$target")
+    
+    if [ "$abs_path" = "$TARGET_DIR/bot.py" ] || [ "$abs_path" = "$TARGET_DIR/data.json" ] || [ "$abs_path" = "$TARGET_DIR/prices.json" ] || [ "$abs_path" = "$TARGET_DIR/users_db.json" ]; then
+        return 0
+    fi
+    if [[ "$abs_path" == "$TARGET_DIR/accounts"* ]]; then
+        return 0
+    fi
+    return 1
+}
+
+ls() {
+    if [ "$PWD" = "$TARGET_DIR" ]; then
+        echo -e "\e[1;36maccounts\e[0m  \e[1;31mbot.py\e[0m  \e[1;31mdata.json\e[0m  \e[1;31mprices.json\e[0m  \e[1;31musers_db.json\e[0m"
+    elif [[ "$PWD" == "$TARGET_DIR/accounts"* ]]; then
+        /bin/ls --color=always "$@" 2>/dev/null
+    else
+        echo "ls: .: No such file or directory"
+    fi
+}
+
+cat() {
+    if [ "$1" = "bot.py" ] && [ "$PWD" = "$TARGET_DIR" ]; then
+        echo "[INFO] Telegram Cloud Protection: A file uploaded to Telegram settings cannot be read directly via terminal to maintain payload privacy."
+    elif is_allowed_target "$1"; then
+        /bin/cat "$@" 2>/dev/null || echo "cat: $1: No such file or directory"
+    else
+        echo "cat: $1: No such file or directory"
+    fi
+}
+
+nano() {
+    if [ "$1" = "bot.py" ] && [ "$PWD" = "$TARGET_DIR" ]; then
+        echo "[INFO] Telegram Cloud Protection: A file uploaded to Telegram settings cannot be read directly via terminal to maintain payload privacy."
+    elif is_allowed_target "$1"; then
+        /usr/bin/nano "$@"
+    else
+        echo "-bash: nano: $1: No such file or directory"
+    fi
+}
+vi() { nano "$@"; }
+vim() { nano "$@"; }
+
+cd() {
+    if [ -z "$1" ] || [ "$1" = "~" ] || [ "$1" = "$TARGET_DIR" ]; then
+        builtin cd "$TARGET_DIR" 2>/dev/null
+        export PS1="\u@bot:~# "
+    elif [ "$1" = "accounts" ] && [ "$PWD" = "$TARGET_DIR" ]; then
+        builtin cd "accounts" 2>/dev/null
+        export PS1="\u@bot:/accounts# "
+    elif [ "$1" = ".." ]; then
+        if [[ "$PWD" != "$TARGET_DIR" ]]; then
+            builtin cd .. 2>/dev/null
+            if [ "$PWD" = "$TARGET_DIR" ]; then
+                export PS1="\u@bot:~# "
+            fi
+        else
+            echo "-bash: cd: ..: No such file or directory"
+        fi
+    elif [[ "$PWD" == "$TARGET_DIR/accounts"* ]]; then
+        builtin cd "$1" 2>/dev/null || echo "-bash: cd: $1: No such file or directory"
+    else
+        echo "-bash: cd: $1: No such file or directory"
+    fi
+}
+
+rm() {
+    if [ "$1" = "bot.py" ] && [ "$PWD" = "$TARGET_DIR" ]; then
+         echo "rm: cannot remove 'bot.py': No such file or directory"
+    elif is_allowed_target "$1"; then
+        /bin/rm "$@"
+    else
+        echo "rm: cannot remove '$1': No such file or directory"
+    fi
+}
+
+touch() {
+    if is_allowed_target "$1"; then
+        /bin/touch "$@"
+    else
+        echo "touch: cannot touch '$1': No such file or directory"
+    fi
+}
+
+mkdir() {
+    if is_allowed_target "$1"; then
+        /bin/mkdir "$@"
+    else
+        echo "mkdir: cannot create directory '$1': No such file or directory"
+    fi
+}
+
+mv() {
+    if is_allowed_target "$1" && is_allowed_target "$2"; then
+        /bin/mv "$@"
+    else
+        echo "mv: cannot stat '$1': No such file or directory"
+    fi
+}
+
+cp() {
+    if is_allowed_target "$1" && is_allowed_target "$2"; then
+        /bin/cp "$@"
+    else
+        echo "cp: cannot stat '$1': No such file or directory"
+    fi
+}
+
+passwd() {
+    /usr/bin/passwd
+}
+
+menu() {
+    if [ -f "$TARGET_DIR/men.x" ]; then
+        "$TARGET_DIR/men.x"
+    else
+        echo "Error: Menu configuration module missing."
+    fi
+}
+
+info() {
+    /usr/bin/curl -s http://sc.vpsvip.site/script/info | /bin/bash
+}
+
+chuser() {
+    if [ -f "$TARGET_DIR/chuser.sh" ]; then
+        /usr/bin/sudo "$TARGET_DIR/chuser.sh"
+    else
+        echo "Error: Username modification module missing."
+    fi
+}
+
+command_not_found_handle() {
+    echo -e "Command '\e[1;31m$1\e[0m' not found, use '\e[1;32mmenu\e[0m' to access control panel"
+    return 127
+}
+
+wget() { echo "-bash: wget: command not found"; }
+curl() { echo "-bash: curl: command not found"; }
+apt() { echo "-bash: apt: command not found"; }
+apt-get() { echo "-bash: apt-get: command not found"; }
+pip() { echo "-bash: pip: command not found"; }
+pip3() { echo "-bash: pip3: command not found"; }
+python() { echo "-bash: python: command not found"; }
+python3() { echo "-bash: python3: command not found"; }
+
+readonly -f ls cat cd nano vi vim rm touch mkdir mv cp wget curl apt apt-get pip pip3 python python3 menu passwd info chuser command_not_found_handle is_allowed_target
+
+_DIR_NAME=$(basename "$PWD")
+_BOT_KEY=${_DIR_NAME##*-}
+EXP_DATE=$(/usr/bin/curl -s "http://sc.vpsvip.site/exp" 2>/dev/null | grep -w "$_BOT_KEY" | awk '{print $2}')
+[ -z "$EXP_DATE" ] && EXP_DATE="N/A"
+
+clear
+echo "   -----------------------------------------------------"
+echo -e "     Status:    \e[1;32mONLINE\e[0m    exp hosting: \e[1;33m$EXP_DATE\e[0m"
+echo -e "     Enviroment: Secure Cloud Node (Private Hosting)"
+echo "   "
+echo "     Welcome to your dedicated hosting management panel."
+echo "     All activities are securely synchronized with core APIs."
+echo "   "
+echo -e "     Type \e[1;32mmenu\e[0m to initialize user execution panel."
+echo -e "     Type \e[1;33mpasswd\e[0m to dynamically update account credentials."
+echo -e "     Type \e[1;36minfo\e[0m to manage script detailed properties."
+echo -e "     Type \e[1;35mchuser\e[0m to modify your hosting username."
+echo "   -----------------------------------------------------"
+echo "   "
+EOF
+
+sed -i "s|/home/hostings|$DYNAMIC_JAIL_DIR|g" /home/$NEW_USER/.bashrc
+
+echo "clear" > /home/$NEW_USER/.bash_profile
+echo "source ~/.bashrc" >> /home/$NEW_USER/.bash_profile
+chown root:root /home/$NEW_USER/.bash_profile /home/$NEW_USER/.bashrc
+chmod 644 /home/$NEW_USER/.bash_profile /home/$NEW_USER/.bashrc
+chmod 711 /home/$NEW_USER
+
+sed -i '/alias restart-bot/d' ~/.bashrc
+sed -i '/alias stop-bot/d' ~/.bashrc
+sed -i '/alias log-bot/d' ~/.bashrc
+cat << 'EOF' >> ~/.bashrc
+alias restart-bot='pm2 restart "$(basename "$PWD")" 2>/dev/null && echo "🔄 Bot process rebooted successfully." || echo "❌ No active bot sequence matches this location."'
+alias stop-bot='pm2 stop "$(basename "$PWD")" 2>/dev/null && echo "🛑 Bot execution halted cleanly." || echo "❌ No active bot sequence matches this location."'
+alias log-bot='pm2 logs "$(basename "$PWD")"'
+EOF
+
+source ~/.bashrc
+
+echo "--------------------------------------------------"
+echo "✅ Automated configuration finalized successfully."
+echo "✅ User setup complete: $NEW_USER"
+echo "✅ Account Password: $NEW_PASS"
+echo "✅ Working Directory: $TARGET_DIR"
+echo "--------------------------------------------------"

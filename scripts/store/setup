@@ -134,6 +134,8 @@ chmod 0440 "/etc/sudoers.d/$NEW_USER"
 chown -R "$NEW_USER":"$NEW_USER" "$TARGET_DIR"
 chmod -R 755 "$TARGET_DIR"
 
+chown "$NEW_USER":"$NEW_USER" "$TARGET_DIR"/*.json
+
 # File protections
 chown root:root "$TARGET_DIR/not_enc.py" "$TARGET_DIR/ecosystem.config.js" "$TARGET_DIR/chuser.sh" "$TARGET_DIR/"pyarmor* 2>/dev/null
 chmod 700 "$TARGET_DIR/not_enc.py" "$TARGET_DIR/ecosystem.config.js" "$TARGET_DIR/"pyarmor* 2>/dev/null

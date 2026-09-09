@@ -1,4 +1,3 @@
-#version_1
 #!/bin/bash
 
 # --- منع الخروج عند الضغط على Ctrl+C وإرجاع المستخدم للقائمة الرئيسية ---
@@ -19,7 +18,7 @@ WHITE='\e[1;77m'
 RED='\e[1;31m'
 PURPLE='\e[1;35m'
 
-# دالة العودة الافتراضية للواجهة الرئيسية الخاصة بالـ VPS (مطابقة تماماً للسكربت الأول)
+# دالة العودة الافتراضية للواجهة الرئيسية الخاصة بالـ VPS
 exit_to_main_panel() {
     _DIR_NAME=$(basename "$PWD")
     _BOT_KEY=${_DIR_NAME##*-}
@@ -58,6 +57,20 @@ validate_telegram_token() {
     fi
 }
 
+# دالة الفحص الصامت لـ OxaPay
+validate_oxapay_key() {
+    local key="$1"
+    [ -z "$key" ] && return 1
+    
+    local res=$(curl -s -X POST https://api.oxapay.com/merchants/list -H "Content-Type: application/json" -d "{\"merchant\": \"$key\"}")
+    
+    if echo "$res" | grep -E -q '"result":\s*100'; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 # صيانة أولية للملفات
 [ ! -f "$BANNED_FILE" ] && echo "[]" > "$BANNED_FILE"
 
@@ -67,7 +80,7 @@ SHOULD_SETUP=false
 if [ ! -f "$JSON_FILE" ] || ! jq -e . "$JSON_FILE" >/dev/null 2>&1; then
     SHOULD_SETUP=true
 else
-    for key in API_TOKEN ADMIN_ID ADMIN_USERNAME BINANCE_PAY_ID BINANCE_API_KEY BINANCE_API_SECRET; do
+    for key in API_TOKEN ADMIN_ID ADMIN_USERNAME BINANCE_PAY_ID BINANCE_API_KEY BINANCE_API_SECRET OXAPAY_API_KEY; do
         val=$(jq -r ".[\"$key\"]" "$JSON_FILE" 2>/dev/null)
         if [ -z "$val" ] || [ "$val" = "null" ]; then
             SHOULD_SETUP=true
@@ -84,7 +97,7 @@ if [ "$SHOULD_SETUP" = true ]; then
     echo -e "${YELLOW}└──────────────────────────────────────────────────┘${NC}"
     echo -e "Please provide the bot details (or type '${RED}exit${NC}' to return to main panel):\n"
     
-    # 1. طلب التوكن مع إمكانية التخطي الذكي عند أعطال الشبكة
+    # 1. طلب التوكن
     while true; do
         read -p " 1. Enter Telegram Bot Token: " b_token
         if [ "$b_token" = "exit" ]; then exit_to_main_panel; fi
@@ -130,7 +143,29 @@ if [ "$SHOULD_SETUP" = true ]; then
     read -p " 6. Enter Binance API Secret: " b_sec
     [ "$b_sec" = "exit" ] && exit_to_main_panel
 
-    # حفظ البيانات بطريقة عازمة ومقاومة للأخطاء باستعمال jq الآمن
+    # 7. طلب OxaPay مع إمكانية التخطي
+    while true; do
+        read -p " 7. Enter OxaPay API Key (or type 'skip' to disable): " o_key
+        if [ "$o_key" = "exit" ]; then exit_to_main_panel; fi
+        
+        if [[ -z "$o_key" || "$o_key" == "skip" ]]; then
+            echo -e "${YELLOW} [!] Skipped. OxaPay disabled.${NC}"
+            o_key=""
+            o_status="error"
+            break
+        fi
+
+        echo -e "${YELLOW} Checking OxaPay key validity...${NC}"
+        if validate_oxapay_key "$o_key"; then
+            echo -e "${GREEN} [✓] Valid Key! Saved.${NC}"
+            o_status="ok"
+            break
+        else
+            echo -e "${RED} [X] Invalid Key. Try again.${NC}"
+        fi
+    done
+
+    # حفظ البيانات
     jq -n \
       --arg token "$b_token" \
       --argjson id "$b_id" \
@@ -138,7 +173,9 @@ if [ "$SHOULD_SETUP" = true ]; then
       --arg pay "$b_pay" \
       --arg api "$b_api" \
       --arg sec "$b_sec" \
-      '{API_TOKEN: $token, ADMIN_ID: $id, ADMIN_USERNAME: $user, BINANCE_PAY_ID: $pay, BINANCE_API_KEY: $api, BINANCE_API_SECRET: $sec, ADMIN_SECRET: $sec}' > "$JSON_FILE"
+      --arg oxa "$o_key" \
+      --arg o_stat "$o_status" \
+      '{API_TOKEN: $token, ADMIN_ID: $id, ADMIN_USERNAME: $user, BINANCE_PAY_ID: $pay, BINANCE_API_KEY: $api, BINANCE_API_SECRET: $sec, ADMIN_SECRET: $sec, OXAPAY_API_KEY: $oxa, oxapay_status: $o_stat}' > "$JSON_FILE"
 
     chmod 666 "$JSON_FILE"
     echo -e "${GREEN}\n [SUCCESS] All settings saved permanently! Starting bot...${NC}"
@@ -161,7 +198,6 @@ ban_user() {
 }
 
 unban_user() {
-    # إظهار قائمة المحظورين تلقائياً أولاً عند الدخول
     echo -e "\n${RED} ┌───────── CURRENT BANNED USERS ──────────┐${NC}"
     local count=$(jq '. | length' "$BANNED_FILE" 2>/dev/null)
     if [ "$count" -eq 0 ] 2>/dev/null; then
@@ -188,7 +224,7 @@ restart_bot() {
     sleep 2
 }
 
-# دالة التعديل الآمنة كلياً والمقاومة للرموز الخاصة بـ jq arguments
+# دالة التعديل الآمنة كلياً
 edit_value() {
     local key=$1
     local label=$2
@@ -203,12 +239,18 @@ edit_value() {
             exit_to_main_panel
         fi
         
+        # التعامل مع الإدخال الفارغ أو أمر التخطي (مخصص لـ OxaPay)
         if [ -z "$n_val" ]; then
-            echo -e "${RED} [SKIP] No value entered.${NC}"
-            sleep 1
-            return
+            if [[ "$key" == "OXAPAY_API_KEY" ]]; then
+                n_val="skip"
+            else
+                echo -e "${RED} [SKIP] No value entered.${NC}"
+                sleep 1
+                return
+            fi
         fi
 
+        # فحوصات مخصصة لكل نوع
         if [[ "$key" == "API_TOKEN" ]]; then
             echo -e "${YELLOW} Checking token validity...${NC}"
             if ! validate_telegram_token "$n_val"; then
@@ -218,25 +260,42 @@ edit_value() {
                     continue
                 fi
             fi
-        fi
-
-        # الحفظ الاحترافي باستعمال الباراميترز الآمنة لمنع تلف الـ JSON نهائياً
-        if [[ "$key" == "ADMIN_ID" ]]; then
-            if [[ "$n_val" =~ ^[0-9]+$ ]]; then
-                jq --argjson v "$n_val" --arg k "$key" '.[$k] = $v' "$JSON_FILE" > "$SCRIPT_DIR/temp.json" && mv "$SCRIPT_DIR/temp.json" "$JSON_FILE"
+        elif [[ "$key" == "OXAPAY_API_KEY" ]]; then
+            if [[ "$n_val" == "skip" ]]; then
+                echo -e "${YELLOW} [!] Skipped. OxaPay disabled.${NC}"
+                jq '.OXAPAY_API_KEY = "" | .oxapay_status = "error"' "$JSON_FILE" > "$SCRIPT_DIR/temp.json" && mv "$SCRIPT_DIR/temp.json" "$JSON_FILE"
+                break
+            fi
+            
+            echo -e "${YELLOW} Checking OxaPay key validity...${NC}"
+            if validate_oxapay_key "$n_val"; then
+                echo -e "${GREEN} [✓] Valid Key! Saved.${NC}"
+                jq --arg v "$n_val" '.OXAPAY_API_KEY = $v | .oxapay_status = "ok"' "$JSON_FILE" > "$SCRIPT_DIR/temp.json" && mv "$SCRIPT_DIR/temp.json" "$JSON_FILE"
                 break
             else
-                echo -e "${RED} [ERROR] Admin ID must be a number!${NC}"
+                echo -e "${RED} [X] Invalid Key. Try again (or type 'skip' to disable).${NC}"
                 continue
             fi
-        else
-            jq --arg v "$n_val" --arg k "$key" '.[$k] = $v' "$JSON_FILE" > "$SCRIPT_DIR/temp.json" && mv "$SCRIPT_DIR/temp.json" "$JSON_FILE"
-            
-            # مزامنة حقل التكرار الإضافي لـ Binance Secret لو تم تعديله
-            if [[ "$key" == "BINANCE_API_SECRET" ]]; then
-                jq --arg v "$n_val" '.ADMIN_SECRET = $v' "$JSON_FILE" > "$SCRIPT_DIR/temp.json" && mv "$SCRIPT_DIR/temp.json" "$JSON_FILE"
+        fi
+
+        # الحفظ لجميع القيم الأخرى
+        if [[ "$key" != "OXAPAY_API_KEY" ]]; then
+            if [[ "$key" == "ADMIN_ID" ]]; then
+                if [[ "$n_val" =~ ^[0-9]+$ ]]; then
+                    jq --argjson v "$n_val" --arg k "$key" '.[$k] = $v' "$JSON_FILE" > "$SCRIPT_DIR/temp.json" && mv "$SCRIPT_DIR/temp.json" "$JSON_FILE"
+                    break
+                else
+                    echo -e "${RED} [ERROR] Admin ID must be a number!${NC}"
+                    continue
+                fi
+            else
+                jq --arg v "$n_val" --arg k "$key" '.[$k] = $v' "$JSON_FILE" > "$SCRIPT_DIR/temp.json" && mv "$SCRIPT_DIR/temp.json" "$JSON_FILE"
+                
+                if [[ "$key" == "BINANCE_API_SECRET" ]]; then
+                    jq --arg v "$n_val" '.ADMIN_SECRET = $v' "$JSON_FILE" > "$SCRIPT_DIR/temp.json" && mv "$SCRIPT_DIR/temp.json" "$JSON_FILE"
+                fi
+                break
             fi
-            break
         fi
     done
     echo -e "${GREEN} [DONE] Updated safely!${NC}"
@@ -257,13 +316,14 @@ while true; do
     echo -e "${YELLOW} │  ${GREEN}4.${NC} ${CYAN}Change Binance Pay ID${NC}"
     echo -e "${YELLOW} │  ${GREEN}5.${NC} ${CYAN}Change Binance API Key${NC}"
     echo -e "${YELLOW} │  ${GREEN}6.${NC} ${CYAN}Change Binance API Secret${NC}"
-    echo -e "${YELLOW} │  ${GREEN}7.${NC} ${CYAN}Ban a User (Username)${NC}"
-    echo -e "${YELLOW} │  ${GREEN}8.${NC} ${CYAN}Unban a User (Username)${NC}"
-    echo -e "${YELLOW} │  ${GREEN}9.${NC} ${CYAN}Restart Bot (PM2)${NC}"
+    echo -e "${YELLOW} │  ${GREEN}7.${NC} ${CYAN}Change OxaPay API Key${NC}"
+    echo -e "${YELLOW} │  ${GREEN}8.${NC} ${CYAN}Ban a User (Username)${NC}"
+    echo -e "${YELLOW} │  ${GREEN}9.${NC} ${CYAN}Unban a User (Username)${NC}"
+    echo -e "${YELLOW} │  ${GREEN}10.${NC} ${CYAN}Restart Bot (PM2)${NC}"
     echo -e "${YELLOW} │  ${GREEN}x.${NC} ${CYAN}Exit Manager${NC}"
     echo -e "${YELLOW} └──────────────────────────────────┘${NC}"
     echo -e ""
-    read -p " Select From Options [ 1 - 9 ] : " menu
+    read -p " Select From Options [ 1 - 10 ] : " menu
 
     case $menu in
         1) edit_value "API_TOKEN" "Telegram Bot Token" ;;
@@ -272,11 +332,11 @@ while true; do
         4) edit_value "BINANCE_PAY_ID" "Binance Pay ID" ;;
         5) edit_value "BINANCE_API_KEY" "Binance API Key" ;;
         6) edit_value "BINANCE_API_SECRET" "Binance API Secret" ;;
-        7) ban_user ;;
-        8) unban_user ;;
-        9) restart_bot ;;
+        7) edit_value "OXAPAY_API_KEY" "OxaPay API Key (or 'skip' to disable)" ;;
+        8) ban_user ;;
+        9) unban_user ;;
+        10) restart_bot ;;
         x|X) exit_to_main_panel ;;
         *) echo -e "${RED} Invalid Option!${NC}"; sleep 1 ;;
     esac
 done
-
